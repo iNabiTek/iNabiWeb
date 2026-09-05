@@ -7,7 +7,8 @@
 <title>Weather Radar Test | iNabiTek</title>
 <meta name="description" content="Experimental weather radar map for Mt Stirling.">
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
 *{box-sizing:border-box}
@@ -79,15 +80,49 @@ h2{
     background:#ddd
 }
 
-.info{
+.radar-info{
     margin-top:15px;
-    padding:15px 18px;
+    padding:18px;
     background:#fff;
     border:1px solid #ddd;
     border-radius:10px;
-    color:#666;
-    font-size:13px;
-    line-height:1.5
+}
+
+.radar-title{
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:10px
+}
+
+.legend{
+    height:16px;
+    width:100%;
+    border-radius:4px;
+    background:linear-gradient(
+        to right,
+        rgba(180,180,255,.45),
+        rgba(80,160,255,.65),
+        rgba(0,210,255,.75),
+        rgba(0,255,150,.8),
+        rgba(255,255,0,.85),
+        rgba(255,150,0,.9),
+        rgba(255,50,50,.95),
+        rgba(180,0,180,1)
+    );
+}
+
+.legend-labels{
+    display:flex;
+    justify-content:space-between;
+    margin-top:5px;
+    color:#777;
+    font-size:11px
+}
+
+.radar-status{
+    margin-top:12px;
+    color:#777;
+    font-size:12px
 }
 
 footer{
@@ -115,38 +150,63 @@ footer{
 
 <main>
 
-    <a class="back" href="/tools/index.html">← iNabiTek tools</a>
+    <a class="back" href="/tools/index.html">
+        ← iNabiTek tools
+    </a>
 
     <h2>Weather Radar Test</h2>
 
     <p class="lead">
-        Experimental recent radar imagery centred on Mt Stirling, Victoria.
+        Recent radar imagery centred on Mt Stirling, Victoria.
     </p>
 
     <div id="map"></div>
 
-    <div class="info">
-        Radar imagery: RainViewer.
-        Map data: OpenStreetMap.
-        Radar animation shows recent available observations.
+    <div class="radar-info">
+
+        <div class="radar-title">
+            Radar intensity — dBZ
+        </div>
+
+        <div class="legend"></div>
+
+        <div class="legend-labels">
+            <span>&lt;10</span>
+            <span>20</span>
+            <span>30</span>
+            <span>40</span>
+            <span>50</span>
+            <span>60+</span>
+        </div>
+
+        <div class="radar-status" id="radar-status">
+            Loading radar…
+        </div>
+
     </div>
 
 </main>
 
-<footer>© 2026 iNabiTek</footer>
+<footer>
+    © 2026 iNabiTek · Radar data by RainViewer · Map data © OpenStreetMap contributors
+</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-const mtStirling = [-37.12651, 146.49801];
 
-const map = L.map("map").setView(mtStirling, 9);
+const mtStirling = [-37.12651,146.49801];
+
+const map = L.map("map", {
+    minZoom: 5,
+    maxZoom: 7
+}).setView(mtStirling,7);
 
 L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
-        maxZoom: 19,
-        attribution: "© OpenStreetMap contributors"
+        maxZoom:19,
+        attribution:"© OpenStreetMap contributors"
     }
 ).addTo(map);
 
@@ -154,23 +214,25 @@ L.marker(mtStirling)
     .addTo(map)
     .bindPopup("<strong>Mt Stirling</strong>");
 
-async function loadRadar() {
+async function loadRadar(){
 
-    try {
+    try{
 
         const response = await fetch(
             "https://api.rainviewer.com/public/weather-maps.json"
         );
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error("Radar service unavailable");
         }
 
         const data = await response.json();
 
-        const frames = data.radar && data.radar.past;
+        const frames =
+            data.radar &&
+            data.radar.past;
 
-        if (!frames || !frames.length) {
+        if(!frames || !frames.length){
             throw new Error("No radar frames available");
         }
 
@@ -181,8 +243,10 @@ async function loadRadar() {
                 frame.path +
                 "/256/{z}/{x}/{y}/2/1_1.png",
                 {
-                    opacity: 0,
-                    attribution: "Radar: RainViewer"
+                    minZoom:5,
+                    maxZoom:7,
+                    opacity:0,
+                    attribution:"Radar: RainViewer"
                 }
             ).addTo(map);
 
@@ -190,17 +254,42 @@ async function loadRadar() {
 
         let current = layers.length - 1;
 
-        function showFrame(index) {
+        function formatTime(unixTime){
 
-            layers.forEach((layer, i) => {
+            return new Date(
+                unixTime * 1000
+            ).toLocaleTimeString(
+                "en-AU",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            );
+
+        }
+
+        function showFrame(index){
+
+            layers.forEach((layer,i)=>{
 
                 layer.setOpacity(
-                    i === index ? 0.65 : 0
+                    i === index ? 0.70 : 0
                 );
 
             });
 
             current = index;
+
+            document.getElementById(
+                "radar-status"
+            ).textContent =
+                "Radar frame: " +
+                formatTime(frames[index].time) +
+                " · " +
+                (index + 1) +
+                " of " +
+                frames.length;
+
         }
 
         showFrame(current);
@@ -208,11 +297,12 @@ async function loadRadar() {
         let playing = false;
         let timer = null;
 
-        const control = L.control({
-            position:"topright"
-        });
+        const control =
+            L.control({
+                position:"topright"
+            });
 
-        control.onAdd = function() {
+        control.onAdd = function(){
 
             const element =
                 L.DomUtil.create(
@@ -229,9 +319,11 @@ async function loadRadar() {
             element.textContent =
                 "▶ Animate radar";
 
-            L.DomEvent.disableClickPropagation(element);
+            L.DomEvent.disableClickPropagation(
+                element
+            );
 
-            element.onclick = function() {
+            element.onclick = function(){
 
                 playing = !playing;
 
@@ -240,10 +332,10 @@ async function loadRadar() {
                     ? "❚❚ Pause radar"
                     : "▶ Animate radar";
 
-                if (playing) {
+                if(playing){
 
                     timer = setInterval(
-                        function() {
+                        function(){
 
                             showFrame(
                                 (current + 1) %
@@ -254,7 +346,7 @@ async function loadRadar() {
                         500
                     );
 
-                } else {
+                }else{
 
                     clearInterval(timer);
 
@@ -263,25 +355,27 @@ async function loadRadar() {
             };
 
             return element;
+
         };
 
         control.addTo(map);
 
-    } catch (error) {
+    }catch(error){
 
         console.error(error);
 
-        document.getElementById("map").innerHTML =
-            '<div style="padding:20px;font:14px sans-serif;color:#777">' +
-            'Radar data could not be loaded.' +
-            '</div>';
+        document.getElementById(
+            "radar-status"
+        ).textContent =
+            "Radar data could not be loaded.";
 
     }
 
 }
 
 loadRadar();
+
 </script>
 
-</body>s
+</body>
 </html>
