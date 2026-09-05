@@ -309,12 +309,7 @@ footer{
   }
 }
 
-@media(max-width:500px){
-  table th:nth-child(5),
-  table td:nth-child(5){
-    display:none
-  }
-}
+/* Rain column deliberately remains visible on mobile */
 </style>
 </head>
 
@@ -552,12 +547,6 @@ async function loadWeather(){
     const hourly=data.hourly;
 
 
-    /*
-      Open-Meteo returns current.time in the requested
-      timezone. Find the corresponding hourly forecast
-      point for the freezing level.
-    */
-
     const currentHour=current.time.slice(0,13);
 
     let hourIndex=hourly.time.findIndex(
@@ -606,9 +595,7 @@ async function loadWeather(){
 
     /* ---------------------------------------------
        7-DAY FORECAST
-
-       This section is intentionally kept as the
-       original forecast, including RAIN.
+       Includes daily rain.
     --------------------------------------------- */
 
     const daily=data.daily;
