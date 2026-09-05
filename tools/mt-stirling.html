@@ -132,8 +132,7 @@ h3{
   background:#fff;
   border:1px solid #ddd;
   border-radius:10px;
-  padding:22px;
-  overflow-x:auto
+  padding:22px
 }
 
 .current{
@@ -160,24 +159,27 @@ h3{
   font-weight:500
 }
 
-table{
+.forecast-table{
   width:100%;
   border-collapse:collapse;
   font-size:14px
 }
 
-th{
+.forecast-table th{
   text-align:left;
   font-weight:600;
   color:#555;
   border-bottom:2px solid #ddd;
-  padding:10px 8px
+  padding:10px 7px
 }
 
-td{
+.forecast-table td{
   border-bottom:1px solid #eee;
-  padding:10px 8px;
-  white-space:nowrap
+  padding:10px 7px
+}
+
+.snow-value{
+  font-weight:600
 }
 
 .loading{
@@ -337,10 +339,16 @@ footer{
 }
 
 
+/* =========================================================
+   MOBILE FORECAST
+   ========================================================= */
+
 @media(max-width:650px){
 
   main{
-    padding-top:30px
+    padding-top:30px;
+    padding-left:15px;
+    padding-right:15px
   }
 
   h2{
@@ -349,6 +357,31 @@ footer{
 
   h3{
     font-size:22px
+  }
+
+  #weather{
+    padding:15px 12px
+  }
+
+  .forecast-table{
+    font-size:13px
+  }
+
+  .forecast-table th,
+  .forecast-table td{
+    padding:9px 4px
+  }
+
+  /*
+     Total precipitation is redundant because Rain + Snow
+     already provide the useful information on the small
+     screen. Hiding it allows the forecast to fit neatly
+     without horizontal scrolling.
+  */
+
+  .forecast-table th:last-child,
+  .forecast-table td:last-child{
+    display:none
   }
 
   #map{
@@ -588,6 +621,11 @@ async function loadWeather(){
 
     let html="";
 
+
+    /* -------------------------------------------------------
+       Current conditions
+       ------------------------------------------------------- */
+
     html+=`
       <div class="current">
 
@@ -598,7 +636,7 @@ async function loadWeather(){
 
         <div class="current-box">
           <div class="label">Snowfall</div>
-          <div class="value">${snowfall.toFixed(1)} mm</div>
+          <div class="value">${snowfall.toFixed(1)} cm</div>
         </div>
 
         <div class="current-box">
@@ -615,8 +653,12 @@ async function loadWeather(){
     `;
 
 
+    /* -------------------------------------------------------
+       Seven-day table
+       ------------------------------------------------------- */
+
     html+=`
-      <table>
+      <table class="forecast-table">
 
         <thead>
           <tr>
@@ -625,7 +667,7 @@ async function loadWeather(){
             <th>Max</th>
             <th>Snow</th>
             <th>Rain</th>
-            <th>Total precip.</th>
+            <th>Total</th>
           </tr>
         </thead>
 
@@ -646,6 +688,7 @@ async function loadWeather(){
         }
       );
 
+
       html+=`
         <tr>
 
@@ -659,8 +702,8 @@ async function loadWeather(){
             ${daily.temperature_2m_max[i].toFixed(1)} °C
           </td>
 
-          <td>
-            ${daily.snowfall_sum[i].toFixed(1)} mm
+          <td class="snow-value">
+            ${daily.snowfall_sum[i].toFixed(1)} cm
           </td>
 
           <td>
@@ -711,9 +754,9 @@ const mtStirling=[-37.12651,146.49801];
 
 
 /*
-   Start at zoom 6 so a substantially larger area is visible.
-   Maximum zoom remains 7 for compatibility with the current
-   free RainViewer radar tile API.
+   Start at zoom 6 to show a larger regional area.
+   Maximum zoom remains 7 for compatibility with the
+   current free RainViewer radar tile API.
 */
 
 const map=L.map("map",{
@@ -798,15 +841,10 @@ async function loadRadar(){
 
 
     /* -------------------------------------------------------
-       Frame time
+       Frame timestamp
        ------------------------------------------------------- */
 
     function frameTime(frame){
-
-      /*
-         RainViewer frame time is supplied as Unix time.
-         Convert it to Melbourne local time.
-      */
 
       const date=new Date(frame.time*1000);
 
@@ -833,7 +871,7 @@ async function loadRadar(){
 
       document.getElementById("radarStatus").textContent=
         "Frame "+(current+1)+" of "+frames.length+
-        " · "+timeText+" AEST/AEDT";
+        " · "+timeText+" Melbourne time";
     }
 
 
@@ -889,7 +927,7 @@ async function loadRadar(){
 
 
     /* -------------------------------------------------------
-       Play / Pause button
+       Play / Pause
        ------------------------------------------------------- */
 
     playPauseButton.addEventListener(
@@ -907,9 +945,7 @@ async function loadRadar(){
 
 
     /* -------------------------------------------------------
-       Previous button
-
-       Manual frame selection always pauses animation.
+       Previous
        ------------------------------------------------------- */
 
     previousButton.addEventListener(
@@ -928,9 +964,7 @@ async function loadRadar(){
 
 
     /* -------------------------------------------------------
-       Next button
-
-       Manual frame selection always pauses animation.
+       Next
        ------------------------------------------------------- */
 
     nextButton.addEventListener(
@@ -949,10 +983,11 @@ async function loadRadar(){
 
 
     /* -------------------------------------------------------
-       Start automatically
+       Automatically start animation
        ------------------------------------------------------- */
 
     startAnimation();
+
 
   }catch(e){
 
