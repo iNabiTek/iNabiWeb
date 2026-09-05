@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Mt Stirling — Snow, Weather & Radar | iNabiTek</title>
-<meta name="description" content="Mt Stirling snow cams, NOAA GFS weather forecast and recent weather radar imagery via RainViewer.">
+<meta name="description" content="Mt Stirling snow cams, NOAA GFS weather forecast and recent weather radar imagery.">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
@@ -112,8 +112,7 @@ h2{
     font-size:12px
 }
 
-.weather-card,
-.radar-card{
+.weather-card{
     margin-top:30px;
     padding:25px;
     background:#fff;
@@ -121,8 +120,7 @@ h2{
     border-radius:10px
 }
 
-.weather-head,
-.radar-head{
+.weather-head{
     display:flex;
     justify-content:space-between;
     align-items:baseline;
@@ -130,14 +128,12 @@ h2{
     flex-wrap:wrap
 }
 
-.weather-head h3,
-.radar-head h3{
+.weather-head h3{
     margin:0;
     font-size:22px
 }
 
-.status,
-#radar-status{
+.status{
     font-size:12px;
     color:#777
 }
@@ -174,8 +170,7 @@ table{
     font-size:14px
 }
 
-th,
-td{
+th,td{
     text-align:left;
     padding:12px 8px;
     border-bottom:1px solid #eee
@@ -190,11 +185,55 @@ th{
     font-weight:600
 }
 
+.error{
+    color:#a33;
+    padding:12px 0
+}
+
+.source{
+    margin-top:18px;
+    font-size:12px;
+    color:#888;
+    line-height:1.5
+}
+
+
+/* -----------------------------------------------------------
+   Weather radar
+----------------------------------------------------------- */
+
+.radar-card{
+    margin-top:30px;
+    padding:25px;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:10px
+}
+
+.radar-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:15px
+}
+
+.radar-head h3{
+    margin:0;
+    font-size:22px
+}
+
+.radar-status{
+    font-size:12px;
+    color:#777
+}
+
 #map{
     width:100%;
-    height:500px;
+    height:600px;
     border:1px solid #ddd;
-    border-radius:8px;
+    border-radius:10px;
     overflow:hidden;
     background:#ddd
 }
@@ -207,26 +246,21 @@ th{
     margin-top:15px
 }
 
-.radar-controls button{
+.radar-button{
     border:1px solid #ccc;
     background:#fff;
     border-radius:6px;
-    padding:7px 12px;
+    padding:8px 12px;
     font:inherit;
-    font-size:13px;
+    font-size:14px;
     cursor:pointer
 }
 
-.radar-controls button:hover{
+.radar-button:hover{
     background:#f3f3f3
 }
 
-.radar-controls button:disabled{
-    opacity:.5;
-    cursor:default
-}
-
-#frame-time{
+.frame-time{
     color:#666;
     font-size:13px
 }
@@ -251,8 +285,7 @@ th{
 }
 
 .legend span{
-    display:block;
-    min-width:0
+    display:block
 }
 
 .legend-labels{
@@ -282,21 +315,8 @@ th{
     line-height:1.5
 }
 
-.source{
-    margin-top:18px;
-    font-size:12px;
-    color:#888;
-    line-height:1.5
-}
-
-.source a,
 .radar-note a{
     color:#666
-}
-
-.error{
-    color:#a33;
-    padding:12px 0
 }
 
 footer{
@@ -325,13 +345,12 @@ footer{
         font-size:13px
     }
 
-    th,
-    td{
+    th,td{
         padding:10px 5px
     }
 
     #map{
-        height:420px
+        height:500px
     }
 
     .legend-labels{
@@ -355,8 +374,7 @@ footer{
     <h2>Mt Stirling Snow &amp; Weather</h2>
 
     <p class="lead">
-        Live snow cameras, a seven-day NOAA GFS forecast and recent weather
-        radar imagery for Mt Stirling, Victoria.
+        Live snow cameras and a seven-day NOAA GFS forecast for Mt Stirling, Victoria.
     </p>
 
 
@@ -368,13 +386,13 @@ footer{
 
             <img
                 class="cam"
-                id="tbj"
-                src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingtbjcam.jpg"
-                alt="Mt Stirling Telephone Box Junction webcam"
+                id="bluff"
+                src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingbluffcam.jpg"
+                alt="Mt Stirling Bluff Spur webcam"
             >
 
             <div class="card-body">
-                <h3>Telephone Box Junction</h3>
+                <h3>Bluff Spur</h3>
                 <div class="muted">Mt Stirling webcam</div>
             </div>
 
@@ -389,13 +407,13 @@ footer{
 
             <img
                 class="cam"
-                id="bluff"
-                src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingbluffcam.jpg"
-                alt="Mt Stirling Bluff Spur webcam"
+                id="tbj"
+                src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingtbjcam.jpg"
+                alt="Mt Stirling Telephone Box Junction webcam"
             >
 
             <div class="card-body">
-                <h3>Bluff Spur</h3>
+                <h3>Telephone Box Junction</h3>
                 <div class="muted">Mt Stirling webcam</div>
             </div>
 
@@ -456,7 +474,7 @@ footer{
 
             <h3>Weather Radar</h3>
 
-            <div id="radar-status">
+            <div class="radar-status" id="radar-status">
                 Loading radar…
             </div>
 
@@ -468,26 +486,31 @@ footer{
 
         <div class="radar-controls">
 
-            <button id="play" type="button">
-                ▶ Play
-            </button>
-
-            <button id="prev" type="button">
+            <button
+                class="radar-button"
+                id="prev"
+                type="button"
+            >
                 ← Previous
             </button>
 
-            <button id="next" type="button">
+            <button
+                class="radar-button"
+                id="next"
+                type="button"
+            >
                 Next →
             </button>
 
-            <span id="frame-time">
+            <span
+                class="frame-time"
+                id="frame-time"
+            >
                 Loading…
             </span>
 
         </div>
 
-
-        <!-- RADAR LEGEND -->
 
         <div class="legend-wrap">
 
@@ -560,7 +583,7 @@ footer{
 <script>
 
 /* ============================================================
-   WEBCAM REFRESH
+   EXISTING WEBCAM FUNCTIONALITY
 ============================================================ */
 
 const CAMS = [
@@ -593,11 +616,11 @@ function refreshCams(){
 }
 
 
-setInterval(refreshCams,10 * 60 * 1000);
+setInterval(refreshCams, 10 * 60 * 1000);
 
 
 /* ============================================================
-   NOAA GFS WEATHER
+   EXISTING NOAA GFS WEATHER FUNCTIONALITY
 ============================================================ */
 
 async function loadWeather(){
@@ -628,16 +651,16 @@ async function loadWeather(){
         const daily = d.daily;
 
 
-        let i = h.time.findIndex(
-            t => new Date(t) >= new Date()
-        );
+        const nowIndex =
+            Math.max(
+                0,
+                h.time.findIndex(
+                    t => new Date(t) >= new Date()
+                )
+            );
 
 
-        if(i < 0){
-
-            i = 0;
-
-        }
+        const i = nowIndex;
 
 
         const fmtDate = s =>
@@ -661,13 +684,17 @@ async function loadWeather(){
             );
 
 
-        const currentTemp = h.temperature_2m[i];
+        const currentTemp =
+            h.temperature_2m[i];
 
-        const currentSnow = h.snowfall[i];
+        const currentSnow =
+            h.snowfall[i];
 
-        const currentRain = h.rain[i];
+        const currentRain =
+            h.rain[i];
 
-        const freeze = h.freezing_level_height[i];
+        const freeze =
+            h.freezing_level_height[i];
 
 
         let html = `
@@ -736,6 +763,7 @@ async function loadWeather(){
 
 
                 <tbody>
+
         `;
 
 
@@ -787,21 +815,29 @@ async function loadWeather(){
         `;
 
 
-        document.getElementById("weather").innerHTML = html;
+        document.getElementById(
+            "weather"
+        ).innerHTML = html;
 
 
-        document.getElementById("updated").textContent =
+        document.getElementById(
+            "updated"
+        ).textContent =
             "Forecast loaded " + fmt(h.time[i]);
 
 
     }
     catch(e){
 
-        document.getElementById("weather").innerHTML =
+        document.getElementById(
+            "weather"
+        ).innerHTML =
             '<p class="error">Unable to load the NOAA GFS forecast right now.</p>';
 
 
-        document.getElementById("updated").textContent =
+        document.getElementById(
+            "updated"
+        ).textContent =
             "Forecast unavailable";
 
     }
@@ -813,7 +849,8 @@ loadWeather();
 
 
 /* ============================================================
-   RAINVIEWER WEATHER RADAR
+   RAINVIEWER RADAR
+   Based on the original working radar-test implementation.
 ============================================================ */
 
 const mtStirling = [
@@ -840,7 +877,7 @@ L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
         maxZoom:7,
-        attribution:"&copy; OpenStreetMap contributors"
+        attribution:"© OpenStreetMap contributors"
     }
 ).addTo(map);
 
@@ -851,23 +888,11 @@ L.marker(mtStirling)
     .addTo(map)
     .bindPopup(
         "<strong>Mt Stirling</strong><br>Victoria"
-    )
-    .openPopup();
-
-
-let radarFrames = [];
-
-let radarLayer = null;
-
-let currentFrame = 0;
-
-let playing = false;
-
-let playTimer = null;
+    );
 
 
 /* ------------------------------------------------------------
-   Load radar frame list
+   Load all available radar frames
 ------------------------------------------------------------ */
 
 async function loadRadar(){
@@ -881,21 +906,24 @@ async function loadRadar(){
 
         if(!r.ok){
 
-            throw new Error("Radar request failed");
+            throw new Error(
+                "Radar unavailable"
+            );
 
         }
 
 
-        const data = await r.json();
+        const d = await r.json();
 
 
-        radarFrames =
-            data.radar && data.radar.past
-                ? data.radar.past
-                : [];
+        const frames =
+            d.radar && d.radar.past;
 
 
-        if(!radarFrames.length){
+        if(
+            !frames ||
+            !frames.length
+        ){
 
             throw new Error(
                 "No radar frames available"
@@ -904,13 +932,87 @@ async function loadRadar(){
         }
 
 
-        /* Start with latest available frame */
+        /*
+           Load every available frame as a separate
+           Leaflet layer.
 
-        currentFrame =
-            radarFrames.length - 1;
+           This is the same animation method used
+           by the original radar test.
+        */
+
+        const layers =
+            frames.map(
+                f =>
+                    L.tileLayer(
+                        "https://tilecache.rainviewer.com" +
+                        f.path +
+                        "/256/{z}/{x}/{y}/2/1_1.png",
+                        {
+                            opacity:0,
+                            attribution:"Radar: RainViewer"
+                        }
+                    ).addTo(map)
+            );
 
 
-        showRadarFrame(currentFrame);
+        let current =
+            layers.length - 1;
+
+
+        function show(i){
+
+            layers.forEach(
+                (layer,n) => {
+
+                    layer.setOpacity(
+                        n === i
+                            ? 0.65
+                            : 0
+                    );
+
+                }
+            );
+
+
+            current = i;
+
+
+            const frame =
+                frames[current];
+
+
+            if(frame){
+
+                const frameDate =
+                    new Date(
+                        frame.time * 1000
+                    );
+
+
+                document.getElementById(
+                    "frame-time"
+                ).textContent =
+                    frameDate.toLocaleString(
+                        "en-AU",
+                        {
+                            weekday:"short",
+                            day:"numeric",
+                            month:"short",
+                            hour:"2-digit",
+                            minute:"2-digit"
+                        }
+                    );
+
+            }
+
+        }
+
+
+        /*
+           Start with the latest available radar frame.
+        */
+
+        show(current);
 
 
         document.getElementById(
@@ -919,8 +1021,165 @@ async function loadRadar(){
             "Latest available radar";
 
 
+        /* ----------------------------------------------------
+           Original Animate radar control
+        ---------------------------------------------------- */
+
+        let playing = false;
+
+        let timer = null;
+
+
+        const control =
+            L.control(
+                {
+                    position:"topright"
+                }
+            );
+
+
+        control.onAdd =
+            function(){
+
+                const el =
+                    L.DomUtil.create(
+                        "div",
+                        "leaflet-bar"
+                    );
+
+
+                el.style.cssText =
+                    "background:#fff;" +
+                    "padding:8px 10px;" +
+                    "cursor:pointer;" +
+                    "font-size:13px;" +
+                    "white-space:nowrap";
+
+
+                el.textContent =
+                    "▶ Animate radar";
+
+
+                L.DomEvent.disableClickPropagation(
+                    el
+                );
+
+
+                el.onclick =
+                    function(){
+
+                        playing =
+                            !playing;
+
+
+                        el.textContent =
+                            playing
+                                ? "❚❚ Pause radar"
+                                : "▶ Animate radar";
+
+
+                        if(playing){
+
+                            timer =
+                                setInterval(
+                                    function(){
+
+                                        show(
+                                            (
+                                                current + 1
+                                            ) %
+                                            layers.length
+                                        );
+
+                                    },
+                                    500
+                                );
+
+                        }
+                        else{
+
+                            clearInterval(
+                                timer
+                            );
+
+                        }
+
+                    };
+
+
+                return el;
+
+            };
+
+
+        control.addTo(map);
+
+
+        /* ----------------------------------------------------
+           Previous / Next controls
+           These do not replace the Animate control.
+        ---------------------------------------------------- */
+
+        const previous =
+            document.getElementById(
+                "prev"
+            );
+
+
+        const next =
+            document.getElementById(
+                "next"
+            );
+
+
+        previous.onclick =
+            function(){
+
+                if(playing){
+
+                    playing = false;
+
+                    clearInterval(timer);
+
+                }
+
+
+                show(
+                    Math.max(
+                        0,
+                        current - 1
+                    )
+                );
+
+            };
+
+
+        next.onclick =
+            function(){
+
+                if(playing){
+
+                    playing = false;
+
+                    clearInterval(timer);
+
+                }
+
+
+                show(
+                    Math.min(
+                        layers.length - 1,
+                        current + 1
+                    )
+                );
+
+            };
+
     }
     catch(e){
+
+        console.error(e);
+
 
         document.getElementById(
             "radar-status"
@@ -931,231 +1190,12 @@ async function loadRadar(){
         document.getElementById(
             "frame-time"
         ).textContent =
-            "Unable to load radar imagery";
+            "Radar data could not be loaded";
 
     }
 
 }
 
-
-/* ------------------------------------------------------------
-   Display selected radar frame
------------------------------------------------------------- */
-
-function showRadarFrame(index){
-
-    if(!radarFrames.length){
-
-        return;
-
-    }
-
-
-    currentFrame =
-        Math.max(
-            0,
-            Math.min(
-                index,
-                radarFrames.length - 1
-            )
-        );
-
-
-    const frame =
-        radarFrames[currentFrame];
-
-
-    const tileUrl =
-        "https://tilecache.rainviewer.com" +
-        frame.path +
-        "/256/{z}/{x}/{y}/2/1_1.png";
-
-
-    if(radarLayer){
-
-        map.removeLayer(radarLayer);
-
-    }
-
-
-    radarLayer =
-        L.tileLayer(
-            tileUrl,
-            {
-                opacity:0.65,
-                maxZoom:7,
-                tileSize:256
-            }
-        ).addTo(map);
-
-
-    const frameDate =
-        new Date(frame.time * 1000);
-
-
-    document.getElementById(
-        "frame-time"
-    ).textContent =
-        frameDate.toLocaleString(
-            "en-AU",
-            {
-                weekday:"short",
-                day:"numeric",
-                month:"short",
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        );
-
-
-    document.getElementById(
-        "prev"
-    ).disabled =
-        currentFrame === 0;
-
-
-    document.getElementById(
-        "next"
-    ).disabled =
-        currentFrame === radarFrames.length - 1;
-
-}
-
-
-/* ------------------------------------------------------------
-   Stop radar animation
------------------------------------------------------------- */
-
-function stopAnimation(){
-
-    playing = false;
-
-
-    if(playTimer){
-
-        clearInterval(playTimer);
-
-        playTimer = null;
-
-    }
-
-
-    document.getElementById(
-        "play"
-    ).textContent =
-        "▶ Play";
-
-}
-
-
-/* ------------------------------------------------------------
-   Start radar animation
------------------------------------------------------------- */
-
-function startAnimation(){
-
-    if(!radarFrames.length){
-
-        return;
-
-    }
-
-
-    playing = true;
-
-
-    document.getElementById(
-        "play"
-    ).textContent =
-        "■ Stop";
-
-
-    playTimer =
-        setInterval(
-            () => {
-
-                currentFrame++;
-
-
-                if(
-                    currentFrame >=
-                    radarFrames.length
-                ){
-
-                    currentFrame = 0;
-
-                }
-
-
-                showRadarFrame(
-                    currentFrame
-                );
-
-            },
-            700
-        );
-
-}
-
-
-/* ------------------------------------------------------------
-   Radar controls
------------------------------------------------------------- */
-
-document.getElementById(
-    "play"
-).addEventListener(
-    "click",
-    () => {
-
-        if(playing){
-
-            stopAnimation();
-
-        }
-        else{
-
-            startAnimation();
-
-        }
-
-    }
-);
-
-
-document.getElementById(
-    "prev"
-).addEventListener(
-    "click",
-    () => {
-
-        stopAnimation();
-
-        showRadarFrame(
-            currentFrame - 1
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "next"
-).addEventListener(
-    "click",
-    () => {
-
-        stopAnimation();
-
-        showRadarFrame(
-            currentFrame + 1
-        );
-
-    }
-);
-
-
-/* Load radar */
 
 loadRadar();
 
