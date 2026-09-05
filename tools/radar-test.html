@@ -85,7 +85,7 @@ h2{
     padding:18px;
     background:#fff;
     border:1px solid #ddd;
-    border-radius:10px;
+    border-radius:10px
 }
 
 .radar-title{
@@ -95,26 +95,21 @@ h2{
 }
 
 .legend{
-    height:16px;
+    display:flex;
     width:100%;
+    height:20px;
     border-radius:4px;
-    background:linear-gradient(
-        to right,
-        rgba(180,180,255,.45),
-        rgba(80,160,255,.65),
-        rgba(0,210,255,.75),
-        rgba(0,255,150,.8),
-        rgba(255,255,0,.85),
-        rgba(255,150,0,.9),
-        rgba(255,50,50,.95),
-        rgba(180,0,180,1)
-    );
+    overflow:hidden
+}
+
+.legend span{
+    flex:1;
 }
 
 .legend-labels{
     display:flex;
     justify-content:space-between;
-    margin-top:5px;
+    margin-top:6px;
     color:#777;
     font-size:11px
 }
@@ -165,18 +160,31 @@ footer{
     <div class="radar-info">
 
         <div class="radar-title">
-            Radar intensity — dBZ
+            Radar reflectivity — dBZ
         </div>
 
-        <div class="legend"></div>
+        <div class="legend">
+            <span style="background:#087fdb"></span>
+            <span style="background:#6e0dc6"></span>
+            <span style="background:#c06487"></span>
+            <span style="background:#d2883b"></span>
+            <span style="background:#fac431"></span>
+            <span style="background:#fe9a58"></span>
+            <span style="background:#fd4d0e"></span>
+            <span style="background:#ff77ff"></span>
+            <span style="background:#ffffff"></span>
+        </div>
 
         <div class="legend-labels">
-            <span>&lt;10</span>
+            <span>10</span>
             <span>20</span>
             <span>30</span>
             <span>40</span>
             <span>50</span>
-            <span>60+</span>
+            <span>55</span>
+            <span>57</span>
+            <span>60</span>
+            <span>65+ dBZ</span>
         </div>
 
         <div class="radar-status" id="radar-status">
@@ -188,7 +196,8 @@ footer{
 </main>
 
 <footer>
-    © 2026 iNabiTek · Radar data by RainViewer · Map data © OpenStreetMap contributors
+    © 2026 iNabiTek · Radar data by RainViewer ·
+    Map data © OpenStreetMap contributors
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -198,8 +207,8 @@ footer{
 const mtStirling = [-37.12651,146.49801];
 
 const map = L.map("map", {
-    minZoom: 5,
-    maxZoom: 7
+    minZoom:5,
+    maxZoom:7
 }).setView(mtStirling,7);
 
 L.tileLayer(
