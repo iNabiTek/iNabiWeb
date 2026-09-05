@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Mt Stirling — Snow &amp; Weather | iNabiTek</title>
-<meta name="description" content="Mt Stirling snow cams, NOAA GFS weather forecast and radar for Victoria.">
+<meta name="description" content="Mt Stirling snow cams, current conditions, NOAA GFS weather forecast and weather radar.">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
@@ -62,12 +62,6 @@ h2{
   margin:0 0 10px
 }
 
-h3{
-  font-size:24px;
-  font-weight:500;
-  margin:45px 0 15px
-}
-
 .lead{
   max-width:700px;
   font-size:17px;
@@ -76,45 +70,48 @@ h3{
   margin:0 0 35px
 }
 
+.section{
+  margin-top:45px
+}
 
-/* =========================================================
-   CAMERAS
-   ========================================================= */
+.section h3{
+  font-size:24px;
+  font-weight:500;
+  margin:0 0 18px
+}
 
-.cameras{
+.cams{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:20px
 }
 
-.camera{
+.cam{
   background:#fff;
   border:1px solid #ddd;
   border-radius:10px;
   overflow:hidden
 }
 
-.camera img{
+.cam img{
   display:block;
   width:100%;
   height:auto
 }
 
-.camera-info{
-  padding:15px 18px
+.cam-info{
+  padding:14px 16px
 }
 
-.camera-info h4{
+.cam-info h4{
   margin:0 0 5px;
-  font-size:17px;
-  font-weight:600
+  font-size:17px
 }
 
-.camera-info p{
+.cam-info p{
   margin:0;
   color:#777;
-  font-size:13px;
-  line-height:1.5
+  font-size:13px
 }
 
 .note{
@@ -123,212 +120,168 @@ h3{
   font-size:12px
 }
 
-
-/* =========================================================
-   WEATHER
-   ========================================================= */
-
-#weather{
+.weather-box{
   background:#fff;
   border:1px solid #ddd;
   border-radius:10px;
   padding:22px
 }
 
-.current{
+.weather-section-label{
+  font-size:14px;
+  font-weight:600;
+  color:#555;
+  margin:0 0 12px
+}
+
+.current-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:15px;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
   margin-bottom:25px
 }
 
-.current-box{
-  background:#f7f7f7;
+.current-card{
+  background:#f5f5f5;
   border-radius:8px;
-  padding:15px
+  padding:16px;
+  text-align:center
 }
 
-.current-box .label{
-  color:#777;
-  font-size:12px;
+.current-card .value{
+  font-size:27px;
+  font-weight:600;
   margin-bottom:5px
 }
 
-.current-box .value{
-  font-size:22px;
-  font-weight:500
+.current-card .label{
+  color:#777;
+  font-size:12px
 }
 
-.forecast-table{
+.current-time{
+  color:#888;
+  font-size:12px;
+  margin:-8px 0 22px
+}
+
+table{
   width:100%;
   border-collapse:collapse;
   font-size:14px
 }
 
-.forecast-table th{
+th{
   text-align:left;
-  font-weight:600;
-  color:#555;
-  border-bottom:2px solid #ddd;
-  padding:10px 7px
+  color:#666;
+  font-weight:500;
+  border-bottom:1px solid #ddd;
+  padding:10px 8px
 }
 
-.forecast-table td{
-  border-bottom:1px solid #eee;
-  padding:10px 7px
+td{
+  padding:11px 8px;
+  border-bottom:1px solid #eee
 }
 
-.snow-value{
+td.snow{
   font-weight:600
 }
-
-.loading{
-  color:#777;
-  font-size:14px
-}
-
-.error{
-  color:#777;
-  font-size:14px;
-  padding:10px 0
-}
-
-
-/* =========================================================
-   RADAR MAP
-   ========================================================= */
 
 #map{
   width:100%;
   height:500px;
   border-radius:10px;
   overflow:hidden;
-  border:1px solid #ddd;
-  background:#eee
+  border:1px solid #ddd
 }
-
-
-/* =========================================================
-   RADAR INFORMATION / CONTROLS
-   ========================================================= */
 
 .radar-info{
   background:#fff;
   border:1px solid #ddd;
-  border-top:none;
+  border-top:0;
   border-radius:0 0 10px 10px;
-  padding:15px 18px
+  padding:15px
 }
 
 .radar-status{
   text-align:center;
-  font-size:14px;
-  color:#555;
+  color:#666;
+  font-size:13px;
   margin-bottom:12px
 }
 
 .radar-controls{
   display:flex;
   justify-content:center;
-  align-items:center;
   gap:8px;
   margin-bottom:15px;
   flex-wrap:wrap
 }
 
 .radar-button{
-  appearance:none;
   border:1px solid #ccc;
   background:#fff;
   color:#333;
   border-radius:6px;
-  padding:9px 16px;
-  font-family:inherit;
-  font-size:14px;
-  line-height:1.2;
-  cursor:pointer;
-  min-width:105px
+  padding:8px 14px;
+  font-size:13px;
+  cursor:pointer
 }
 
 .radar-button:hover{
-  background:#f1f1f1
+  background:#f3f3f3
 }
 
-.radar-button:active{
-  background:#e7e7e7
+.radar-button:disabled{
+  opacity:.5;
+  cursor:default
 }
-
-.radar-button:focus-visible{
-  outline:2px solid #555;
-  outline-offset:2px
-}
-
-
-/* =========================================================
-   RADAR dBZ LEGEND
-   ========================================================= */
 
 .radar-legend{
   max-width:430px;
-  margin:4px auto 0
+  margin:0 auto
 }
 
 .radar-legend-title{
   text-align:center;
-  font-size:13px;
-  font-weight:600;
-  color:#555;
-  margin-bottom:6px
+  font-size:12px;
+  color:#777;
+  margin-bottom:5px
 }
 
 .radar-gradient{
-  width:100%;
   height:14px;
+  border-radius:3px;
   background:linear-gradient(
     to right,
-    #087fdb,
-    #1c47e8,
-    #6e0dc6,
-    #c80f86,
-    #c06487,
-    #d2883b,
-    #fac431,
-    #fefb02,
-    #fe9a58,
-    #fe5f05,
-    #ff77ff,
-    #ffffff
-  );
-  border:1px solid #ccc
+    #087fdb 0%,
+    #1c47e8 16%,
+    #6e0dc6 33%,
+    #c80f86 50%,
+    #d2883b 66%,
+    #fac431 76%,
+    #fefb02 83%,
+    #fe5f05 91%,
+    #ff77ff 97%,
+    #ffffff 100%
+  )
 }
 
-.radar-labels{
-  width:100%;
+.radar-scale{
   display:flex;
   justify-content:space-between;
-  color:#555;
-  font-size:11px;
-  margin-top:3px
-}
-
-.radar-legend-units{
-  text-align:center;
-  color:#888;
-  font-size:11px;
+  font-size:10px;
+  color:#777;
   margin-top:3px
 }
 
 .radar-note{
-  margin-top:12px;
+  text-align:center;
   color:#888;
-  font-size:12px;
-  line-height:1.5
+  font-size:11px;
+  margin-top:10px
 }
-
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
 
 footer{
   max-width:1000px;
@@ -338,61 +291,33 @@ footer{
   font-size:13px
 }
 
-
-/* =========================================================
-   MOBILE FORECAST
-   ========================================================= */
-
-@media(max-width:650px){
-
+@media(max-width:700px){
   main{
-    padding-top:30px;
-    padding-left:15px;
-    padding-right:15px
+    padding-top:30px
   }
 
   h2{
     font-size:32px
   }
 
-  h3{
-    font-size:22px
-  }
-
-  #weather{
-    padding:15px 12px
-  }
-
-  .forecast-table{
-    font-size:13px
-  }
-
-  .forecast-table th,
-  .forecast-table td{
-    padding:9px 4px
-  }
-
-  /*
-     Total precipitation is redundant because Rain + Snow
-     already provide the useful information on the small
-     screen. Hiding it allows the forecast to fit neatly
-     without horizontal scrolling.
-  */
-
-  .forecast-table th:last-child,
-  .forecast-table td:last-child{
-    display:none
+  .current-grid{
+    grid-template-columns:repeat(2,1fr)
   }
 
   #map{
     height:420px
   }
+}
 
-  .radar-button{
-    min-width:95px;
-    padding:10px 12px
+@media(max-width:500px){
+  .current-grid{
+    grid-template-columns:repeat(2,1fr)
   }
 
+  table th:nth-child(5),
+  table td:nth-child(5){
+    display:none
+  }
 }
 </style>
 </head>
@@ -406,155 +331,166 @@ footer{
 
 <main>
 
-  <a class="back" href="/tools/index.html">← iNabiTek tools</a>
+<a class="back" href="/tools/index.html">← iNabiTek tools</a>
 
-  <h2>Mt Stirling Snow &amp; Weather</h2>
+<h2>Mt Stirling Snow &amp; Weather</h2>
 
-  <p class="lead">
-    Live snow cameras and a seven-day NOAA GFS forecast for Mt Stirling, Victoria.
-  </p>
+<p class="lead">
+  Live snow cameras, current conditions, a seven-day NOAA GFS forecast
+  and weather radar for Mt Stirling, Victoria.
+</p>
 
 
-  <!-- =====================================================
-       CAMERAS
-       ===================================================== -->
+<!-- WEBCAMS -->
 
-  <h3>Live Cameras</h3>
+<section class="section">
 
-  <section class="cameras">
+<h3>Live cameras</h3>
 
-    <div class="camera">
+<div class="cams">
 
-      <img
-        src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingbluffcam.jpg"
-        alt="Mt Stirling Bluff Spur Hut webcam"
-        id="bluffCam"
-      >
+  <div class="cam">
+    <img
+      src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingbluffcam.jpg"
+      alt="Mt Stirling Bluff Spur Hut webcam"
+      id="bluffCam"
+    >
 
-      <div class="camera-info">
-        <h4>Bluff Spur Hut</h4>
-        <p>Mt Stirling live webcam.</p>
-      </div>
-
+    <div class="cam-info">
+      <h4>Bluff Spur Hut</h4>
+      <p>Mt Stirling</p>
     </div>
-
-
-    <div class="camera">
-
-      <img
-        src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingtbjcam.jpg"
-        alt="Mt Stirling Telephone Box Junction webcam"
-        id="tbjCam"
-      >
-
-      <div class="camera-info">
-        <h4>Telephone Box Junction</h4>
-        <p>Mt Stirling live webcam.</p>
-      </div>
-
-    </div>
-
-  </section>
-
-  <div class="note">
-    Camera images supplied by mtbuller.idnetwork.com.au · refreshes automatically.
   </div>
 
 
-  <!-- =====================================================
-       WEATHER
-       ===================================================== -->
+  <div class="cam">
+    <img
+      src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingtbjcam.jpg"
+      alt="Mt Stirling Telephone Box Junction webcam"
+      id="tbjCam"
+    >
 
-  <h3>7-Day Forecast</h3>
+    <div class="cam-info">
+      <h4>Telephone Box Junction</h4>
+      <p>Mt Stirling</p>
+    </div>
+  </div>
 
-  <section id="weather">
+</div>
 
-    <div class="loading">
-      Loading NOAA GFS forecast…
+<p class="note">
+  Camera images supplied by mtbuller.idnetwork.com.au · refreshes automatically
+</p>
+
+</section>
+
+
+<!-- WEATHER -->
+
+<section class="section">
+
+<h3>Weather</h3>
+
+<div class="weather-box">
+
+  <div class="weather-section-label">Current conditions</div>
+
+  <div class="current-grid">
+
+    <div class="current-card">
+      <div class="value" id="currentTemp">—</div>
+      <div class="label">Temperature</div>
     </div>
 
-  </section>
-
-
-  <!-- =====================================================
-       RADAR
-       ===================================================== -->
-
-  <h3>Weather Radar</h3>
-
-  <div id="map"></div>
-
-
-  <div class="radar-info">
-
-    <div class="radar-status" id="radarStatus">
-      Loading radar…
+    <div class="current-card">
+      <div class="value" id="currentSnow">—</div>
+      <div class="label">Snowfall</div>
     </div>
 
-
-    <div class="radar-controls">
-
-      <button
-        type="button"
-        class="radar-button"
-        id="previousRadar"
-      >
-        ‹ Previous
-      </button>
-
-      <button
-        type="button"
-        class="radar-button"
-        id="playPauseRadar"
-      >
-        ❚❚ Pause
-      </button>
-
-      <button
-        type="button"
-        class="radar-button"
-        id="nextRadar"
-      >
-        Next ›
-      </button>
-
+    <div class="current-card">
+      <div class="value" id="currentRain">—</div>
+      <div class="label">Rain</div>
     </div>
 
-
-    <div class="radar-legend">
-
-      <div class="radar-legend-title">
-        Rain intensity
-      </div>
-
-      <div class="radar-gradient"></div>
-
-      <div class="radar-labels">
-        <span>10</span>
-        <span>20</span>
-        <span>30</span>
-        <span>40</span>
-        <span>50</span>
-        <span>60+</span>
-      </div>
-
-      <div class="radar-legend-units">
-        dBZ
-      </div>
-
-    </div>
-
-
-    <div class="radar-note">
-      Radar data by
-      <a href="https://www.rainviewer.com/" target="_blank" rel="noopener">
-        RainViewer
-      </a>,
-      using Australian radar data. Radar imagery shows recent precipitation
-      over the past two hours.
+    <div class="current-card">
+      <div class="value" id="currentFreeze">—</div>
+      <div class="label">Freezing level</div>
     </div>
 
   </div>
+
+  <div class="current-time" id="currentTime">
+    Current model conditions
+  </div>
+
+
+  <div class="weather-section-label">7-day forecast</div>
+
+  <div id="weather">
+    Loading forecast…
+  </div>
+
+</div>
+
+</section>
+
+
+<!-- RADAR -->
+
+<section class="section">
+
+<h3>Weather radar</h3>
+
+<div id="map"></div>
+
+<div class="radar-info">
+
+  <div class="radar-status" id="radarStatus">
+    Loading radar…
+  </div>
+
+  <div class="radar-controls">
+
+    <button class="radar-button" id="previousRadar">
+      ← Previous
+    </button>
+
+    <button class="radar-button" id="playPauseRadar">
+      ❚❚ Pause
+    </button>
+
+    <button class="radar-button" id="nextRadar">
+      Next →
+    </button>
+
+  </div>
+
+  <div class="radar-legend">
+
+    <div class="radar-legend-title">
+      RainViewer radar intensity · dBZ
+    </div>
+
+    <div class="radar-gradient"></div>
+
+    <div class="radar-scale">
+      <span>10</span>
+      <span>20</span>
+      <span>30</span>
+      <span>40</span>
+      <span>50</span>
+      <span>60+</span>
+    </div>
+
+  </div>
+
+  <div class="radar-note">
+    Radar data by RainViewer · historical radar frames
+  </div>
+
+</div>
+
+</section>
 
 </main>
 
@@ -568,118 +504,128 @@ footer{
 
 <script>
 
-/* =========================================================
+/* -------------------------------------------------
    WEBCAM REFRESH
-   ========================================================= */
+------------------------------------------------- */
 
-function refreshCameras(){
+setInterval(function(){
 
-  const timestamp=Date.now();
+  const stamp="?t="+Date.now();
 
   document.getElementById("bluffCam").src=
-    "https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingbluffcam.jpg?"+timestamp;
+    "https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingbluffcam.jpg"+stamp;
 
   document.getElementById("tbjCam").src=
-    "https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingtbjcam.jpg?"+timestamp;
-}
+    "https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingtbjcam.jpg"+stamp;
 
-setInterval(refreshCameras,600000);
+},600000);
 
 
-/* =========================================================
-   NOAA GFS WEATHER
-   ========================================================= */
+/* -------------------------------------------------
+   WEATHER
+------------------------------------------------- */
 
 async function loadWeather(){
 
-  const url =
-    "https://api.open-meteo.com/v1/gfs" +
-    "?latitude=-37.12651&longitude=146.49801&elevation=1747" +
-    "&hourly=precipitation,rain,snowfall,temperature_2m,freezing_level_height" +
-    "&daily=snowfall_sum,rain_sum,precipitation_sum,temperature_2m_min,temperature_2m_max" +
-    "&forecast_days=7&timezone=Australia/Melbourne";
-
   try{
+
+    const url =
+      "https://api.open-meteo.com/v1/gfs" +
+      "?latitude=-37.12651&longitude=146.49801&elevation=1747" +
+
+      "&current=temperature_2m,rain,snowfall" +
+
+      "&hourly=precipitation,rain,snowfall,temperature_2m,freezing_level_height" +
+
+      "&daily=snowfall_sum,rain_sum,precipitation_sum,temperature_2m_min,temperature_2m_max" +
+
+      "&forecast_days=7" +
+      "&timezone=Australia/Melbourne";
+
 
     const response=await fetch(url);
 
-    if(!response.ok){
+    if(!response.ok)
       throw new Error("Weather unavailable");
-    }
 
     const data=await response.json();
 
+
+    /* ---------------------------------------------
+       CURRENT CONDITIONS
+
+       Temperature, rain and snowfall come from
+       Open-Meteo's current conditions.
+
+       Freezing level is taken from the hourly
+       forecast corresponding to the current hour.
+    --------------------------------------------- */
+
+    const current=data.current;
     const hourly=data.hourly;
+
+
+    document.getElementById("currentTemp").textContent=
+      Math.round(current.temperature_2m)+" °C";
+
+
+    document.getElementById("currentSnow").textContent=
+      current.snowfall.toFixed(1)+" cm";
+
+
+    document.getElementById("currentRain").textContent=
+      current.rain.toFixed(1)+" mm";
+
+
+    const currentHour=current.time.slice(0,13);
+
+    let hourIndex=hourly.time.findIndex(
+      t=>t.slice(0,13)===currentHour
+    );
+
+    if(hourIndex<0)
+      hourIndex=0;
+
+
+    const freezing=hourly.freezing_level_height[hourIndex];
+
+    document.getElementById("currentFreeze").textContent=
+      Math.round(freezing)+" m";
+
+
+    document.getElementById("currentTime").textContent=
+      "Current model conditions · "+
+      current.time.replace("T"," ")+
+      " Melbourne time";
+
+
+    /* ---------------------------------------------
+       7-DAY FORECAST TABLE
+    --------------------------------------------- */
+
     const daily=data.daily;
 
-    const nowIndex=0;
-
-    const temperature=hourly.temperature_2m[nowIndex];
-    const snowfall=hourly.snowfall[nowIndex];
-    const rain=hourly.rain[nowIndex];
-    const freezing=hourly.freezing_level_height[nowIndex];
-
-    let html="";
-
-
-    /* -------------------------------------------------------
-       Current conditions
-       ------------------------------------------------------- */
-
-    html+=`
-      <div class="current">
-
-        <div class="current-box">
-          <div class="label">Temperature</div>
-          <div class="value">${temperature.toFixed(1)} °C</div>
-        </div>
-
-        <div class="current-box">
-          <div class="label">Snowfall</div>
-          <div class="value">${snowfall.toFixed(1)} cm</div>
-        </div>
-
-        <div class="current-box">
-          <div class="label">Rain</div>
-          <div class="value">${rain.toFixed(1)} mm</div>
-        </div>
-
-        <div class="current-box">
-          <div class="label">Freezing Level</div>
-          <div class="value">${Math.round(freezing)} m</div>
-        </div>
-
-      </div>
-    `;
-
-
-    /* -------------------------------------------------------
-       Seven-day table
-       ------------------------------------------------------- */
-
-    html+=`
-      <table class="forecast-table">
-
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Min</th>
-            <th>Max</th>
-            <th>Snow</th>
-            <th>Rain</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-
-        <tbody>
-    `;
+    let html=
+      '<table>'+
+      '<thead>'+
+      '<tr>'+
+      '<th>Day</th>'+
+      '<th>Min</th>'+
+      '<th>Max</th>'+
+      '<th>Snow</th>'+
+      '<th>Rain</th>'+
+      '</tr>'+
+      '</thead>'+
+      '<tbody>';
 
 
     for(let i=0;i<daily.time.length;i++){
 
-      const date=new Date(daily.time[i]+"T00:00:00");
+      const date=new Date(
+        daily.time[i]+"T00:00:00+10:00"
+      );
 
-      const dateText=date.toLocaleDateString(
+      const day=date.toLocaleDateString(
         "en-AU",
         {
           weekday:"short",
@@ -689,75 +635,58 @@ async function loadWeather(){
       );
 
 
-      html+=`
-        <tr>
+      const min=Math.round(
+        daily.temperature_2m_min[i]
+      );
 
-          <td>${dateText}</td>
+      const max=Math.round(
+        daily.temperature_2m_max[i]
+      );
 
-          <td>
-            ${daily.temperature_2m_min[i].toFixed(1)} °C
-          </td>
+      const snow=daily.snowfall_sum[i];
+      const rain=daily.rain_sum[i];
 
-          <td>
-            ${daily.temperature_2m_max[i].toFixed(1)} °C
-          </td>
 
-          <td class="snow-value">
-            ${daily.snowfall_sum[i].toFixed(1)} cm
-          </td>
-
-          <td>
-            ${daily.rain_sum[i].toFixed(1)} mm
-          </td>
-
-          <td>
-            ${daily.precipitation_sum[i].toFixed(1)} mm
-          </td>
-
-        </tr>
-      `;
+      html+=
+        "<tr>"+
+        "<td>"+day+"</td>"+
+        "<td>"+min+" °C</td>"+
+        "<td>"+max+" °C</td>"+
+        '<td class="snow">'+snow.toFixed(1)+" cm</td>"+
+        "<td>"+rain.toFixed(1)+" mm</td>"+
+        "</tr>";
     }
 
 
-    html+=`
-        </tbody>
-      </table>
-    `;
-
-
-    html+=`
-      <div class="note">
-        Forecast from NOAA GFS via Open-Meteo · Mt Stirling elevation: 1747 m.
-      </div>
-    `;
-
+    html+="</tbody></table>";
 
     document.getElementById("weather").innerHTML=html;
+
 
   }catch(error){
 
     console.error(error);
 
-    document.getElementById("weather").innerHTML=
-      '<div class="error">Weather data could not be loaded.</div>';
+    document.getElementById("currentTemp").textContent="—";
+    document.getElementById("currentSnow").textContent="—";
+    document.getElementById("currentRain").textContent="—";
+    document.getElementById("currentFreeze").textContent="—";
+
+    document.getElementById("weather").textContent=
+      "Weather data could not be loaded.";
+
   }
+
 }
 
 loadWeather();
 
 
-/* =========================================================
-   RAINVIEWER RADAR
-   ========================================================= */
+/* -------------------------------------------------
+   RADAR
+------------------------------------------------- */
 
 const mtStirling=[-37.12651,146.49801];
-
-
-/*
-   Start at zoom 6 to show a larger regional area.
-   Maximum zoom remains 7 for compatibility with the
-   current free RainViewer radar tile API.
-*/
 
 const map=L.map("map",{
   minZoom:5,
@@ -779,10 +708,6 @@ L.marker(mtStirling)
   .bindPopup("<strong>Mt Stirling</strong>");
 
 
-/* =========================================================
-   LOAD RADAR
-   ========================================================= */
-
 async function loadRadar(){
 
   try{
@@ -791,24 +716,20 @@ async function loadRadar(){
       "https://api.rainviewer.com/public/weather-maps.json"
     );
 
-    if(!r.ok){
+    if(!r.ok)
       throw new Error("Radar unavailable");
-    }
+
 
     const d=await r.json();
 
     const frames=d.radar&&d.radar.past;
 
-    if(!frames||!frames.length){
+    if(!frames||!frames.length)
       throw new Error("No radar frames available");
-    }
 
-
-    /* -------------------------------------------------------
-       Create all radar layers once
-       ------------------------------------------------------- */
 
     const layers=frames.map(f=>
+
       L.tileLayer(
         "https://tilecache.rainviewer.com"+
         f.path+
@@ -818,31 +739,12 @@ async function loadRadar(){
           attribution:"Radar: RainViewer"
         }
       ).addTo(map)
+
     );
 
 
-    /* -------------------------------------------------------
-       Current frame
-       ------------------------------------------------------- */
-
     let current=layers.length-1;
 
-
-    function show(i){
-
-      layers.forEach((layer,n)=>
-        layer.setOpacity(n===i?0.65:0)
-      );
-
-      current=i;
-
-      updateStatus();
-    }
-
-
-    /* -------------------------------------------------------
-       Frame timestamp
-       ------------------------------------------------------- */
 
     function frameTime(frame){
 
@@ -860,6 +762,7 @@ async function loadRadar(){
           hour12:false
         }
       );
+
     }
 
 
@@ -867,20 +770,36 @@ async function loadRadar(){
 
       const frame=frames[current];
 
-      const timeText=frameTime(frame);
-
       document.getElementById("radarStatus").textContent=
-        "Frame "+(current+1)+" of "+frames.length+
-        " · "+timeText+" Melbourne time";
+        "Frame "+
+        (current+1)+
+        " of "+
+        frames.length+
+        " · "+
+        frameTime(frame)+
+        " Melbourne time";
+
+    }
+
+
+    function show(i){
+
+      layers.forEach(
+        (layer,n)=>
+          layer.setOpacity(
+            n===i ? 0.65 : 0
+          )
+      );
+
+      current=i;
+
+      updateStatus();
+
     }
 
 
     show(current);
 
-
-    /* =====================================================
-       PLAY / PAUSE
-       ===================================================== */
 
     let playing=true;
     let timer=null;
@@ -907,10 +826,13 @@ async function loadRadar(){
 
       timer=setInterval(
         ()=>{
-          show((current+1)%layers.length);
+          show(
+            (current+1)%layers.length
+          );
         },
         500
       );
+
     }
 
 
@@ -923,68 +845,47 @@ async function loadRadar(){
       playing=false;
 
       playPauseButton.textContent="▶ Animate";
+
     }
 
-
-    /* -------------------------------------------------------
-       Play / Pause
-       ------------------------------------------------------- */
 
     playPauseButton.addEventListener(
       "click",
       ()=>{
-
-        if(playing){
+        if(playing)
           pauseAnimation();
-        }else{
+        else
           startAnimation();
-        }
-
       }
     );
 
-
-    /* -------------------------------------------------------
-       Previous
-       ------------------------------------------------------- */
 
     previousButton.addEventListener(
       "click",
       ()=>{
-
         pauseAnimation();
 
         const previous=
-          (current-1+layers.length)%layers.length;
+          (current-1+layers.length)%
+          layers.length;
 
         show(previous);
-
       }
     );
 
 
-    /* -------------------------------------------------------
-       Next
-       ------------------------------------------------------- */
-
     nextButton.addEventListener(
       "click",
       ()=>{
-
         pauseAnimation();
 
         const next=
           (current+1)%layers.length;
 
         show(next);
-
       }
     );
 
-
-    /* -------------------------------------------------------
-       Automatically start animation
-       ------------------------------------------------------- */
 
     startAnimation();
 
@@ -997,12 +898,14 @@ async function loadRadar(){
       "Radar data could not be loaded.";
 
     document.getElementById("playPauseRadar").disabled=true;
+
     document.getElementById("previousRadar").disabled=true;
+
     document.getElementById("nextRadar").disabled=true;
 
   }
-}
 
+}
 
 loadRadar();
 
