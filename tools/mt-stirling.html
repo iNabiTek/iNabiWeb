@@ -165,6 +165,48 @@ h2{
   margin:0 0 25px
 }
 
+.model-box{
+  background:#f5f5f5;
+  border-radius:8px;
+  padding:16px;
+  margin-bottom:25px
+}
+
+.model-title{
+  font-size:13px;
+  font-weight:600;
+  color:#555;
+  margin-bottom:10px
+}
+
+.model-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px
+}
+
+.model-item{
+  text-align:center
+}
+
+.model-item .value{
+  font-size:18px;
+  font-weight:500;
+  margin-bottom:3px
+}
+
+.model-item .label{
+  color:#777;
+  font-size:11px
+}
+
+.model-note{
+  margin-top:12px;
+  color:#888;
+  font-size:11px;
+  line-height:1.4
+}
+
 table{
   width:100%;
   border-collapse:collapse;
@@ -304,6 +346,10 @@ footer{
     grid-template-columns:repeat(2,1fr)
   }
 
+  .model-grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+
   #map{
     height:420px
   }
@@ -382,7 +428,9 @@ footer{
 
 <div class="weather-box">
 
-  <div class="weather-section-label">Current conditions</div>
+  <div class="weather-section-label">
+    Current conditions · BOM observation
+  </div>
 
   <div class="current-grid">
 
@@ -392,27 +440,68 @@ footer{
     </div>
 
     <div class="current-card">
-      <div class="value" id="currentSnow">—</div>
-      <div class="label">Snowfall</div>
+      <div class="value" id="currentFeels">—</div>
+      <div class="label">Feels like</div>
     </div>
 
     <div class="current-card">
       <div class="value" id="currentRain">—</div>
-      <div class="label">Rain</div>
+      <div class="label">Rain since 9am</div>
     </div>
 
     <div class="current-card">
-      <div class="value" id="currentFreeze">—</div>
-      <div class="label">Freezing level</div>
+      <div class="value" id="currentWind">—</div>
+      <div class="label">Wind</div>
     </div>
 
   </div>
 
   <div class="current-time" id="currentTime">
-    Current model conditions
+    Loading observation…
   </div>
 
-  <div class="weather-section-label">7-day forecast</div>
+
+  <div class="weather-section-label">
+    GFS model comparison · Mt Stirling
+  </div>
+
+  <div class="model-box">
+
+    <div class="model-grid">
+
+      <div class="model-item">
+        <div class="value" id="modelTemp">—</div>
+        <div class="label">Temperature</div>
+      </div>
+
+      <div class="model-item">
+        <div class="value" id="modelSnow">—</div>
+        <div class="label">Snowfall</div>
+      </div>
+
+      <div class="model-item">
+        <div class="value" id="modelRain">—</div>
+        <div class="label">Rain</div>
+      </div>
+
+      <div class="model-item">
+        <div class="value" id="modelFreeze">—</div>
+        <div class="label">Freezing level</div>
+      </div>
+
+    </div>
+
+    <div class="model-note">
+      Numerical weather model values for the Mt Stirling coordinates,
+      not direct observations. GFS forecast via Open-Meteo.
+    </div>
+
+  </div>
+
+
+  <div class="weather-section-label">
+    7-day GFS forecast · Mt Stirling
+  </div>
 
   <div id="weather">
     Loading forecast…
@@ -517,6 +606,12 @@ async function loadWeather(){
 
   try{
 
+    /*
+      GFS model data for Mt Stirling.
+      Current values are retained here specifically
+      for comparison against the BOM observation.
+    */
+
     const url =
       "https://api.open-meteo.com/v1/gfs" +
       "?latitude=-37.12651&longitude=146.49801&elevation=1747" +
@@ -540,7 +635,7 @@ async function loadWeather(){
 
 
     /* ---------------------------------------------
-       CURRENT CONDITIONS
+       GFS CURRENT MODEL VALUES
     --------------------------------------------- */
 
     const current=data.current;
@@ -557,21 +652,66 @@ async function loadWeather(){
       hourIndex=0;
 
 
-    const temperature=current.temperature_2m;
-    const snowfall=current.snowfall;
-    const rain=current.rain;
+    const modelTemperature=current.temperature_2m;
+    const modelSnowfall=current.snowfall;
+    const modelRain=current.rain;
     const freezing=hourly.freezing_level_height[hourIndex];
+
+
+    document.getElementById("modelTemp").textContent=
+      Number.isFinite(modelTemperature)
+        ? Math.round(modelTemperature)+" °C"
+        : "—";
+
+
+    document.getElementById("modelSnow").textContent=
+      Number.isFinite(modelSnowfall)
+        ? modelSnowfall.toFixed(1)+" cm"
+        : "—";
+
+
+    document.getElementById("modelRain").textContent=
+      Number.isFinite(modelRain)
+        ? modelRain.toFixed(1)+" mm"
+        : "—";
+
+
+    document.getElementById("modelFreeze").textContent=
+      Number.isFinite(freezing)
+        ? Math.round(freezing)+" m"
+        : "—";
+
+
+    /* ---------------------------------------------
+       BOM OBSERVED CONDITIONS
+    --------------------------------------------- */
+
+    const bomResponse=await fetch(
+      "https://api.inabitek.com/observations"
+    );
+
+    if(!bomResponse.ok)
+      throw new Error("BOM observations unavailable");
+
+    const bom=await bomResponse.json();
+
+
+    const temperature=Number(bom.temperature);
+    const feelsLike=Number(bom.apparent_temperature);
+    const rain=Number(bom.rain_since_9am);
+    const windSpeed=Number(bom.wind_speed);
+    const windGust=Number(bom.wind_gust);
 
 
     document.getElementById("currentTemp").textContent=
       Number.isFinite(temperature)
-        ? Math.round(temperature)+" °C"
+        ? temperature.toFixed(1)+" °C"
         : "—";
 
 
-    document.getElementById("currentSnow").textContent=
-      Number.isFinite(snowfall)
-        ? snowfall.toFixed(1)+" cm"
+    document.getElementById("currentFeels").textContent=
+      Number.isFinite(feelsLike)
+        ? feelsLike.toFixed(1)+" °C"
         : "—";
 
 
@@ -581,16 +721,37 @@ async function loadWeather(){
         : "—";
 
 
-    document.getElementById("currentFreeze").textContent=
-      Number.isFinite(freezing)
-        ? Math.round(freezing)+" m"
-        : "—";
+    if(
+      Number.isFinite(windSpeed) &&
+      bom.wind_direction
+    ){
 
+      document.getElementById("currentWind").textContent=
+        bom.wind_direction+" "+windSpeed.toFixed(0)+" km/h";
+
+    }else if(Number.isFinite(windSpeed)){
+
+      document.getElementById("currentWind").textContent=
+        windSpeed.toFixed(0)+" km/h";
+
+    }else{
+
+      document.getElementById("currentWind").textContent="—";
+
+    }
+
+
+    const observationTime=bom.time || "unknown time";
 
     document.getElementById("currentTime").textContent=
-      "Current model conditions · "+
-      current.time.replace("T"," ")+
-      " Melbourne time";
+      "BOM Mount Buller observation · "+
+      observationTime+
+      " · proxy for Mt Stirling"+
+      (
+        Number.isFinite(windGust)
+          ? " · gusts "+windGust.toFixed(0)+" km/h"
+          : ""
+      );
 
 
     /* ---------------------------------------------
@@ -663,12 +824,20 @@ async function loadWeather(){
     console.error(error);
 
     document.getElementById("currentTemp").textContent="—";
-    document.getElementById("currentSnow").textContent="—";
+    document.getElementById("currentFeels").textContent="—";
     document.getElementById("currentRain").textContent="—";
-    document.getElementById("currentFreeze").textContent="—";
+    document.getElementById("currentWind").textContent="—";
+
+    document.getElementById("modelTemp").textContent="—";
+    document.getElementById("modelSnow").textContent="—";
+    document.getElementById("modelRain").textContent="—";
+    document.getElementById("modelFreeze").textContent="—";
 
     document.getElementById("weather").textContent=
       "Weather data could not be loaded.";
+
+    document.getElementById("currentTime").textContent=
+      "Weather observations unavailable.";
 
   }
 
