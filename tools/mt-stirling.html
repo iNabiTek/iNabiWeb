@@ -658,10 +658,12 @@ async function loadWeather(){
     const freezing=hourly.freezing_level_height[hourIndex];
 
 
+    function formatNumber(value, decimals=2){
+      if(!Number.isFinite(value)) return "—";
+        return Number(value.toFixed(decimals)).toString();
+      }
     document.getElementById("modelTemp").textContent=
-      Number.isFinite(modelTemperature)
-        ? Math.round(modelTemperature)+" °C"
-        : "—";
+    formatNumber(modelTemperature,2)+" °C";
 
 
     document.getElementById("modelSnow").textContent=
