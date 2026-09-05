@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Mt Stirling — Snow &amp; Weather | iNabiTek</title>
-<meta name="description" content="Mt Stirling snow cams, current conditions, NOAA GFS weather forecast and weather radar.">
+<meta name="description" content="Mt Stirling snow cams and NOAA GFS weather forecast via Open-Meteo.">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
@@ -138,7 +138,7 @@ h2{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:12px;
-  margin-bottom:25px
+  margin-bottom:12px
 }
 
 .current-card{
@@ -162,7 +162,7 @@ h2{
 .current-time{
   color:#888;
   font-size:12px;
-  margin:-8px 0 22px
+  margin:0 0 25px
 }
 
 table{
@@ -310,10 +310,6 @@ footer{
 }
 
 @media(max-width:500px){
-  .current-grid{
-    grid-template-columns:repeat(2,1fr)
-  }
-
   table th:nth-child(5),
   table td:nth-child(5){
     display:none
@@ -336,8 +332,7 @@ footer{
 <h2>Mt Stirling Snow &amp; Weather</h2>
 
 <p class="lead">
-  Live snow cameras, current conditions, a seven-day NOAA GFS forecast
-  and weather radar for Mt Stirling, Victoria.
+  Live snow cameras and a seven-day NOAA GFS forecast for Mt Stirling, Victoria.
 </p>
 
 
@@ -362,7 +357,6 @@ footer{
     </div>
   </div>
 
-
   <div class="cam">
     <img
       src="https://mtbuller.idnetwork.com.au/cams-mt-stirling/stirlingtbjcam.jpg"
@@ -379,7 +373,7 @@ footer{
 </div>
 
 <p class="note">
-  Camera images supplied by mtbuller.idnetwork.com.au · refreshes automatically
+  Camera image supplied by mtbuller.idnetwork.com.au · refreshes automatically
 </p>
 
 </section>
@@ -422,7 +416,6 @@ footer{
   <div class="current-time" id="currentTime">
     Current model conditions
   </div>
-
 
   <div class="weather-section-label">7-day forecast</div>
 
@@ -553,29 +546,17 @@ async function loadWeather(){
 
     /* ---------------------------------------------
        CURRENT CONDITIONS
-
-       Temperature, rain and snowfall come from
-       Open-Meteo's current conditions.
-
-       Freezing level is taken from the hourly
-       forecast corresponding to the current hour.
     --------------------------------------------- */
 
     const current=data.current;
     const hourly=data.hourly;
 
 
-    document.getElementById("currentTemp").textContent=
-      Math.round(current.temperature_2m)+" °C";
-
-
-    document.getElementById("currentSnow").textContent=
-      current.snowfall.toFixed(1)+" cm";
-
-
-    document.getElementById("currentRain").textContent=
-      current.rain.toFixed(1)+" mm";
-
+    /*
+      Open-Meteo returns current.time in the requested
+      timezone. Find the corresponding hourly forecast
+      point for the freezing level.
+    */
 
     const currentHour=current.time.slice(0,13);
 
@@ -587,10 +568,34 @@ async function loadWeather(){
       hourIndex=0;
 
 
+    const temperature=current.temperature_2m;
+    const snowfall=current.snowfall;
+    const rain=current.rain;
     const freezing=hourly.freezing_level_height[hourIndex];
 
+
+    document.getElementById("currentTemp").textContent=
+      Number.isFinite(temperature)
+        ? Math.round(temperature)+" °C"
+        : "—";
+
+
+    document.getElementById("currentSnow").textContent=
+      Number.isFinite(snowfall)
+        ? snowfall.toFixed(1)+" cm"
+        : "—";
+
+
+    document.getElementById("currentRain").textContent=
+      Number.isFinite(rain)
+        ? rain.toFixed(1)+" mm"
+        : "—";
+
+
     document.getElementById("currentFreeze").textContent=
-      Math.round(freezing)+" m";
+      Number.isFinite(freezing)
+        ? Math.round(freezing)+" m"
+        : "—";
 
 
     document.getElementById("currentTime").textContent=
@@ -600,7 +605,10 @@ async function loadWeather(){
 
 
     /* ---------------------------------------------
-       7-DAY FORECAST TABLE
+       7-DAY FORECAST
+
+       This section is intentionally kept as the
+       original forecast, including RAIN.
     --------------------------------------------- */
 
     const daily=data.daily;
