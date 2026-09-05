@@ -76,6 +76,11 @@ h3{
   margin:0 0 35px
 }
 
+
+/* =========================================================
+   CAMERAS
+   ========================================================= */
+
 .cameras{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -117,6 +122,11 @@ h3{
   color:#888;
   font-size:12px
 }
+
+
+/* =========================================================
+   WEATHER
+   ========================================================= */
 
 #weather{
   background:#fff;
@@ -197,15 +207,30 @@ td{
 
 
 /* =========================================================
-   RADAR CONTROLS
+   RADAR INFORMATION / CONTROLS
    ========================================================= */
+
+.radar-info{
+  background:#fff;
+  border:1px solid #ddd;
+  border-top:none;
+  border-radius:0 0 10px 10px;
+  padding:15px 18px
+}
+
+.radar-status{
+  text-align:center;
+  font-size:14px;
+  color:#555;
+  margin-bottom:12px
+}
 
 .radar-controls{
   display:flex;
   justify-content:center;
   align-items:center;
   gap:8px;
-  margin-top:12px;
+  margin-bottom:15px;
   flex-wrap:wrap
 }
 
@@ -236,35 +261,27 @@ td{
   outline-offset:2px
 }
 
-.radar-note{
-  margin-top:12px;
-  color:#888;
-  font-size:12px;
-  line-height:1.5
-}
-
 
 /* =========================================================
-   RADAR LEGEND
+   RADAR dBZ LEGEND
    ========================================================= */
 
 .radar-legend{
-  background:#fff;
-  padding:8px 10px;
-  border-radius:5px;
-  box-shadow:0 1px 5px rgba(0,0,0,.25);
-  font-size:11px;
-  line-height:1.4
+  max-width:430px;
+  margin:4px auto 0
 }
 
 .radar-legend-title{
+  text-align:center;
+  font-size:13px;
   font-weight:600;
-  margin-bottom:5px
+  color:#555;
+  margin-bottom:6px
 }
 
 .radar-gradient{
-  width:180px;
-  height:12px;
+  width:100%;
+  height:14px;
   background:linear-gradient(
     to right,
     #087fdb,
@@ -284,11 +301,26 @@ td{
 }
 
 .radar-labels{
-  width:180px;
+  width:100%;
   display:flex;
   justify-content:space-between;
   color:#555;
-  margin-top:2px
+  font-size:11px;
+  margin-top:3px
+}
+
+.radar-legend-units{
+  text-align:center;
+  color:#888;
+  font-size:11px;
+  margin-top:3px
+}
+
+.radar-note{
+  margin-top:12px;
+  color:#888;
+  font-size:12px;
+  line-height:1.5
 }
 
 
@@ -420,42 +452,75 @@ footer{
   <div id="map"></div>
 
 
-  <div class="radar-controls">
+  <div class="radar-info">
 
-    <button
-      type="button"
-      class="radar-button"
-      id="previousRadar"
-    >
-      ‹ Previous
-    </button>
-
-    <button
-      type="button"
-      class="radar-button"
-      id="playPauseRadar"
-    >
-      ❚❚ Pause
-    </button>
-
-    <button
-      type="button"
-      class="radar-button"
-      id="nextRadar"
-    >
-      Next ›
-    </button>
-
-  </div>
+    <div class="radar-status" id="radarStatus">
+      Loading radar…
+    </div>
 
 
-  <div class="radar-note">
-    Radar data by
-    <a href="https://www.rainviewer.com/" target="_blank" rel="noopener">
-      RainViewer
-    </a>,
-    using Australian radar data. Radar imagery shows recent precipitation
-    over the past two hours.
+    <div class="radar-controls">
+
+      <button
+        type="button"
+        class="radar-button"
+        id="previousRadar"
+      >
+        ‹ Previous
+      </button>
+
+      <button
+        type="button"
+        class="radar-button"
+        id="playPauseRadar"
+      >
+        ❚❚ Pause
+      </button>
+
+      <button
+        type="button"
+        class="radar-button"
+        id="nextRadar"
+      >
+        Next ›
+      </button>
+
+    </div>
+
+
+    <div class="radar-legend">
+
+      <div class="radar-legend-title">
+        Rain intensity
+      </div>
+
+      <div class="radar-gradient"></div>
+
+      <div class="radar-labels">
+        <span>10</span>
+        <span>20</span>
+        <span>30</span>
+        <span>40</span>
+        <span>50</span>
+        <span>60+</span>
+      </div>
+
+      <div class="radar-legend-units">
+        dBZ
+      </div>
+
+    </div>
+
+
+    <div class="radar-note">
+      Radar data by
+      <a href="https://www.rainviewer.com/" target="_blank" rel="noopener">
+        RainViewer
+      </a>,
+      using Australian radar data. Radar imagery shows recent precipitation
+      over the past two hours.
+    </div>
+
   </div>
 
 </main>
@@ -646,9 +711,9 @@ const mtStirling=[-37.12651,146.49801];
 
 
 /*
-   Zoom 6 gives us a substantially larger geographical
-   view while retaining the same maximum zoom level of 7
-   supported by the current free RainViewer tile API.
+   Start at zoom 6 so a substantially larger area is visible.
+   Maximum zoom remains 7 for compatibility with the current
+   free RainViewer radar tile API.
 */
 
 const map=L.map("map",{
@@ -713,7 +778,9 @@ async function loadRadar(){
     );
 
 
-    /* Start on newest frame */
+    /* -------------------------------------------------------
+       Current frame
+       ------------------------------------------------------- */
 
     let current=layers.length-1;
 
@@ -725,6 +792,48 @@ async function loadRadar(){
       );
 
       current=i;
+
+      updateStatus();
+    }
+
+
+    /* -------------------------------------------------------
+       Frame time
+       ------------------------------------------------------- */
+
+    function frameTime(frame){
+
+      /*
+         RainViewer frame time is supplied as Unix time.
+         Convert it to Melbourne local time.
+      */
+
+      const date=new Date(frame.time*1000);
+
+      return date.toLocaleString(
+        "en-AU",
+        {
+          timeZone:"Australia/Melbourne",
+          weekday:"short",
+          day:"numeric",
+          month:"short",
+          hour:"2-digit",
+          minute:"2-digit",
+          hour12:false
+        }
+      );
+    }
+
+
+    function updateStatus(){
+
+      const frame=frames[current];
+
+      const timeText=frameTime(frame);
+
+      document.getElementById("radarStatus").textContent=
+        "Frame "+(current+1)+" of "+frames.length+
+        " · "+timeText+" AEST/AEDT";
     }
 
 
@@ -732,7 +841,7 @@ async function loadRadar(){
 
 
     /* =====================================================
-       CONTROLS
+       PLAY / PAUSE
        ===================================================== */
 
     let playing=true;
@@ -779,9 +888,9 @@ async function loadRadar(){
     }
 
 
-    /*
-       Play / Pause
-    */
+    /* -------------------------------------------------------
+       Play / Pause button
+       ------------------------------------------------------- */
 
     playPauseButton.addEventListener(
       "click",
@@ -797,11 +906,11 @@ async function loadRadar(){
     );
 
 
-    /*
-       Previous
+    /* -------------------------------------------------------
+       Previous button
 
-       Stepping manually always pauses animation.
-    */
+       Manual frame selection always pauses animation.
+       ------------------------------------------------------- */
 
     previousButton.addEventListener(
       "click",
@@ -818,11 +927,11 @@ async function loadRadar(){
     );
 
 
-    /*
-       Next
+    /* -------------------------------------------------------
+       Next button
 
-       Stepping manually always pauses animation.
-    */
+       Manual frame selection always pauses animation.
+       ------------------------------------------------------- */
 
     nextButton.addEventListener(
       "click",
@@ -839,70 +948,22 @@ async function loadRadar(){
     );
 
 
-    /*
-       Automatically start animation.
-
-       The newest frame is shown first, then the
-       animation advances every 500 ms.
-    */
+    /* -------------------------------------------------------
+       Start automatically
+       ------------------------------------------------------- */
 
     startAnimation();
-
-
-    /* =====================================================
-       RADAR LEGEND
-       ===================================================== */
-
-    const legend=L.control({
-      position:"bottomright"
-    });
-
-
-    legend.onAdd=function(){
-
-      const div=L.DomUtil.create(
-        "div",
-        "radar-legend"
-      );
-
-
-      div.innerHTML=`
-
-        <div class="radar-legend-title">
-          Rain intensity
-        </div>
-
-        <div class="radar-gradient"></div>
-
-        <div class="radar-labels">
-          <span>10</span>
-          <span>20</span>
-          <span>30</span>
-          <span>40</span>
-          <span>50</span>
-          <span>60+</span>
-        </div>
-
-        <div style="margin-top:2px;color:#777">
-          dBZ
-        </div>
-
-      `;
-
-
-      return div;
-    };
-
-
-    legend.addTo(map);
-
 
   }catch(e){
 
     console.error(e);
 
-    document.getElementById("map").innerHTML=
-      '<div style="padding:20px;font:14px sans-serif;color:#777">Radar data could not be loaded.</div>';
+    document.getElementById("radarStatus").textContent=
+      "Radar data could not be loaded.";
+
+    document.getElementById("playPauseRadar").disabled=true;
+    document.getElementById("previousRadar").disabled=true;
+    document.getElementById("nextRadar").disabled=true;
 
   }
 }
