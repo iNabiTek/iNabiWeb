@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tools — iNabiTek</title>
+
+    <meta
+        name="description"
+        content="iNabiTek technical tools, calculators and web applications."
+    >
+
+    <style>
+        :root {
+            --bg: #f5f5f5;
+            --card: #ffffff;
+            --text: #222222;
+            --muted: #666666;
+            --border: #dddddd;
+            --accent: #1f5f8b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 24px 20px;
+        }
+
+        header .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 4px 0 0;
+            color: var(--muted);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 24px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .intro {
+            color: var(--muted);
+            margin-top: 0;
+            margin-bottom: 28px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            display: block;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 22px;
+            color: var(--text);
+            text-decoration: none;
+            transition: border-color 0.15s ease,
+                        box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        footer {
+            max-width: 1100px;
+            margin: 60px auto 30px;
+            padding: 0 20px;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+        <h1>iNabiTek</h1>
+        <p>Technical projects, experiments &amp; tools</p>
+    </div>
+</header>
+
+<main>
+
+    <a class="back" href="/">← Back to iNabiTek</a>
+
+    <h2>Tools</h2>
+
+    <p class="intro">
+        Calculators and small web applications for engineering,
+        measurement and analysis.
+    </p>
+
+    <div class="grid">
+
+        <a class="card" href="/tools/mt-stirling.html">
+            <h3>Mt Stirling Snow &amp; Weather</h3>
+            <p>
+                Mt Stirling webcams and a 7-day snow and weather forecast.
+            </p>
+        </a>
+
+    </div>
+
+</main>
+
+<footer>
+    iNabiTek
+</footer>
+
+</body>
+</html>
