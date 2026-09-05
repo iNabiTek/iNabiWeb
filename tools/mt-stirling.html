@@ -691,11 +691,11 @@ async function loadWeather(){
         hourlyHour>=10 &&
         hourlyHour<=Number(currentHour.slice(11,13))
       ){
-
-        const value=Number(hourly.rain[i]);
-
-        if(Number.isFinite(value))
-          modelRainSince9am+=value;
+    
+      const value=Number(hourly.precipitation[i]);
+        
+      if(Number.isFinite(value))
+        modelRainSince9am+=value;
       }
 
     }
@@ -739,8 +739,8 @@ async function loadWeather(){
 
     document.getElementById("modelRainSince9am").textContent=
       Number.isFinite(modelRainSince9am)
-        ? "Since 9am: "+modelRainSince9am.toFixed(1)+" mm"
-        : "";
+        ?"Precipitation since 9am: "+modelRainSince9am.toFixed(1)+" mm"
+        :"";
 
 
     document.getElementById("modelFreeze").textContent=
