@@ -141,6 +141,35 @@ h2{
   margin-bottom:25px
 }
 
+/* Four-card grid for BOM observations */
+
+.current-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px
+}
+
+.current-card{
+  background:#f5f5f5;
+  border:1px solid #ddd;
+  border-radius:8px;
+  padding:16px;
+  text-align:center
+}
+
+.current-card .value{
+  font-size:27px;
+  font-weight:600;
+  margin-bottom:5px
+}
+
+.current-card .label{
+  color:#777;
+  font-size:12px
+}
+
+/* Five-card grid for GFS model values */
+
 .model-grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
@@ -321,6 +350,7 @@ footer{
     grid-template-columns:1fr
   }
 
+  .current-grid,
   .model-grid{
     grid-template-columns:repeat(2,1fr)
   }
@@ -429,24 +459,24 @@ footer{
 
   <div class="model-box">
 
-    <div class="model-grid">
+    <div class="current-grid">
 
-      <div class="model-item">
+      <div class="current-card">
         <div class="value" id="bomTemp">—</div>
         <div class="label">Temperature</div>
       </div>
 
-      <div class="model-item">
+      <div class="current-card">
         <div class="value" id="bomFeels">—</div>
         <div class="label">Feels like</div>
       </div>
 
-      <div class="model-item">
+      <div class="current-card">
         <div class="value" id="bomRain">—</div>
         <div class="label">Rain since 9am</div>
       </div>
 
-      <div class="model-item">
+      <div class="current-card">
         <div class="value" id="bomWind">—</div>
         <div class="label">Wind</div>
       </div>
@@ -592,7 +622,7 @@ footer{
 <script>
 
 /* -------------------------------------------------
-  BOM OBSERVATIONS
+   BOM OBSERVATIONS
 ------------------------------------------------- */
 
 async function loadObservation(){
@@ -682,7 +712,7 @@ async function loadObservation(){
 
 
 /* -------------------------------------------------
-  GFS WEATHER
+   GFS WEATHER
 ------------------------------------------------- */
 
 async function loadWeather(){
@@ -896,69 +926,73 @@ async function loadWeather(){
       const dailyRain=
         daily.rain_sum[i];
 
-    let wetBulbValues=[];
 
-    for(let j=0;j<hourly.time.length;j++){
+      let wetBulbValues=[];
 
-      const hourlyDate=
-        hourly.time[j].slice(0,10);
 
-      if(hourlyDate===daily.time[i]){
+      for(let j=0;j<hourly.time.length;j++){
 
-        const value=
-          Number(
-            hourly.wet_bulb_temperature_2m[j]
-          );
+        const hourlyDate=
+          hourly.time[j].slice(0,10);
 
-        if(Number.isFinite(value)){
-          wetBulbValues.push(value);
+
+        if(hourlyDate===daily.time[i]){
+
+          const value=
+            Number(
+              hourly.wet_bulb_temperature_2m[j]
+            );
+
+
+          if(Number.isFinite(value)){
+            wetBulbValues.push(value);
+          }
+
         }
 
       }
 
-    }
+
+      const wetBulbMin=
+        wetBulbValues.length
+          ? Math.min(...wetBulbValues)
+          : NaN;
 
 
-    const wetBulbMin=
-      wetBulbValues.length
-        ? Math.min(...wetBulbValues)
-        : NaN;
+      const wetBulbAvg=
+        wetBulbValues.length
+          ? wetBulbValues.reduce(
+              (sum,value)=>sum+value,
+              0
+            )/wetBulbValues.length
+          : NaN;
 
 
-    const wetBulbAvg=
-      wetBulbValues.length
-        ? wetBulbValues.reduce(
-            (sum,value)=>sum+value,
-            0
-          )/wetBulbValues.length
-        : NaN;
-
-
-    html+=
-      "<tr>"+
-      "<td>"+day+"</td>"+
-      "<td>"+min+" °C</td>"+
-      "<td>"+max+" °C</td>"+
-      "<td>"+
-      (
-        Number.isFinite(wetBulbMin)
-          ? wetBulbMin.toFixed(1)+" °C"
-          : "—"
-      )+
-      "</td>"+
-      "<td>"+
-      (
-        Number.isFinite(wetBulbAvg)
-          ? wetBulbAvg.toFixed(1)+" °C"
-          : "—"
-      )+
-      "</td>"+
-'<td class="snow">'+
-        snow.toFixed(1)+
-        " cm</td>"+
+      html+=
+        "<tr>"+
+        "<td>"+day+"</td>"+
+        "<td>"+min+" °C</td>"+
+        "<td>"+max+" °C</td>"+
         "<td>"+
-        dailyRain.toFixed(1)+
-        " mm</td>"+
+        (
+          Number.isFinite(wetBulbMin)
+            ? wetBulbMin.toFixed(1)+" °C"
+            : "—"
+        )+
+        "</td>"+
+        "<td>"+
+        (
+          Number.isFinite(wetBulbAvg)
+            ? wetBulbAvg.toFixed(1)+" °C"
+            : "—"
+        )+
+        "</td>"+
+        '<td class="snow">'+
+          snow.toFixed(1)+
+          " cm</td>"+
+        "<td>"+
+          dailyRain.toFixed(1)+
+          " mm</td>"+
         "</tr>";
 
     }
@@ -1011,7 +1045,7 @@ loadWeather();
 
 
 /* -------------------------------------------------
-  RADAR
+   RADAR
 ------------------------------------------------- */
 
 const selwynSnowfields=[
