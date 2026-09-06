@@ -143,7 +143,7 @@ h2{
 
 .model-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:12px
 }
 
@@ -492,6 +492,11 @@ footer{
         <div class="label">Freezing level</div>
       </div>
 
+      <div class="model-item">
+        <div class="value" id="modelWetBulb">—</div>
+        <div class="label">Wet-bulb temperature</div>
+      </div>
+
     </div>
 
     <div class="model-note">
@@ -691,8 +696,8 @@ async function loadWeather(){
     const url=
       "https://api.open-meteo.com/v1/gfs"+
       "?latitude=-35.90833&longitude=148.45000&elevation=1614"+
-      "&current=temperature_2m,rain,snowfall"+
-      "&hourly=precipitation,rain,snowfall,temperature_2m,freezing_level_height"+
+      "&current=temperature_2m,rain,snowfall,wet_bulb_temperature_2m"+
+      "&hourly=precipitation,rain,snowfall,temperature_2m,freezing_level_height,wet_bulb_temperature_2m"+
       "&daily=snowfall_sum,rain_sum,precipitation_sum,temperature_2m_min,temperature_2m_max"+
       "&forecast_days=7&timezone=Australia/Melbourne";
 
@@ -731,6 +736,7 @@ async function loadWeather(){
     const modelTemperature=current.temperature_2m;
     const modelSnowfall=current.snowfall;
     const modelRain=current.rain;
+    const modelWetBulb=current.wet_bulb_temperature_2m;
 
 
     /*
@@ -820,6 +826,12 @@ async function loadWeather(){
     document.getElementById("modelFreeze").textContent=
       Number.isFinite(freezing)
         ? Math.round(freezing)+" m"
+        : "—";
+
+
+    document.getElementById("modelWetBulb").textContent=
+      Number.isFinite(modelWetBulb)
+        ? modelWetBulb.toFixed(1)+" °C"
         : "—";
 
 
@@ -915,7 +927,8 @@ async function loadWeather(){
       "modelTemp",
       "modelSnow",
       "modelRain",
-      "modelFreeze"
+      "modelFreeze",
+      "modelWetBulb"
     ].forEach(
       id=>
         document.getElementById(id).textContent="—"
