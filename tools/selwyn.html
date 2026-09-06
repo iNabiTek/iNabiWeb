@@ -896,53 +896,63 @@ async function loadWeather(){
       const dailyRain=
         daily.rain_sum[i];
 
-      let wetBulbValues=[];
+    let wetBulbValues=[];
 
-for(let j=0;j<hourly.time.length;j++){
+    for(let j=0;j<hourly.time.length;j++){
 
-  const hourlyDate=
-    hourly.time[j].slice(0,10);
+      const hourlyDate=
+        hourly.time[j].slice(0,10);
 
-  if(hourlyDate===daily.time[i]){
+      if(hourlyDate===daily.time[i]){
 
-    const value=
-      Number(hourly.wet_bulb_temperature_2m[j]);
+        const value=
+          Number(
+            hourly.wet_bulb_temperature_2m[j]
+          );
 
-    if(Number.isFinite(value)){
-      wetBulbValues.push(value);
+        if(Number.isFinite(value)){
+          wetBulbValues.push(value);
+        }
+
+      }
+
     }
-  }
-}
-
-const wetBulbMin=
-  wetBulbValues.length
-    ? Math.min(...wetBulbValues)
-    : NaN;
-
-const wetBulbAvg=
-  wetBulbValues.length
-    ? wetBulbValues.reduce(
-        (sum,value)=>sum+value,
-        0
-      )/wetBulbValues.length
-    : NaN;
 
 
-      html+=
-        "<tr>"+
-        "<td>"+day+"</td>"+
-"<td>"+min+" °C</td>"+
-"<td>"+max+" °C</td>"+
-"<td>"+(
-  Number.isFinite(wetBulbMin)
-    ? wetBulbMin.toFixed(1)+" °C"
-    : "—"
-)+"</td>"+
-"<td>"+(
-  Number.isFinite(wetBulbAvg)
-    ? wetBulbAvg.toFixed(1)+" °C"
-    : "—"
-)+"</td>"+
+    const wetBulbMin=
+      wetBulbValues.length
+        ? Math.min(...wetBulbValues)
+        : NaN;
+
+
+    const wetBulbAvg=
+      wetBulbValues.length
+        ? wetBulbValues.reduce(
+            (sum,value)=>sum+value,
+            0
+          )/wetBulbValues.length
+        : NaN;
+
+
+    html+=
+      "<tr>"+
+      "<td>"+day+"</td>"+
+      "<td>"+min+" °C</td>"+
+      "<td>"+max+" °C</td>"+
+      "<td>"+
+      (
+        Number.isFinite(wetBulbMin)
+          ? wetBulbMin.toFixed(1)+" °C"
+          : "—"
+      )+
+      "</td>"+
+      "<td>"+
+      (
+        Number.isFinite(wetBulbAvg)
+          ? wetBulbAvg.toFixed(1)+" °C"
+          : "—"
+      )+
+      "</td>"+
 '<td class="snow">'+
         snow.toFixed(1)+
         " cm</td>"+
