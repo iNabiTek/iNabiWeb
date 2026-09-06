@@ -181,7 +181,7 @@ h2{
 
 .model-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:12px
 }
 
@@ -346,6 +346,7 @@ footer{
 }
 
 @media(max-width:700px){
+
   main{
     padding-top:30px
   }
@@ -365,6 +366,7 @@ footer{
 }
 
 /* Rain column deliberately remains visible on mobile */
+
 </style>
 </head>
 
@@ -509,6 +511,11 @@ footer{
         <div class="label">Freezing level</div>
       </div>
 
+      <div class="model-item">
+        <div class="value" id="modelWetBulb">—</div>
+        <div class="label">Wet-bulb temperature</div>
+      </div>
+
     </div>
 
     <div class="model-note">
@@ -604,7 +611,7 @@ footer{
 <script>
 
 /* -------------------------------------------------
-   WEBCAM REFRESH
+  WEBCAM REFRESH
 ------------------------------------------------- */
 
 setInterval(function(){
@@ -621,7 +628,7 @@ setInterval(function(){
 
 
 /* -------------------------------------------------
-   BOM OBSERVATIONS
+  BOM OBSERVATIONS
 ------------------------------------------------- */
 
 async function loadObservation(){
@@ -759,7 +766,7 @@ async function loadObservation(){
 
 
 /* -------------------------------------------------
-   GFS WEATHER
+  GFS WEATHER
 ------------------------------------------------- */
 
 async function loadWeather(){
@@ -775,8 +782,8 @@ async function loadWeather(){
     const url=
       "https://api.open-meteo.com/v1/gfs"+
       "?latitude=-37.12651&longitude=146.49801&elevation=1747"+
-      "&current=temperature_2m,rain,snowfall"+
-      "&hourly=precipitation,rain,snowfall,temperature_2m,freezing_level_height"+
+      "&current=temperature_2m,rain,snowfall,wet_bulb_temperature_2m"+
+      "&hourly=precipitation,rain,snowfall,temperature_2m,freezing_level_height,wet_bulb_temperature_2m"+
       "&daily=snowfall_sum,rain_sum,precipitation_sum,temperature_2m_min,temperature_2m_max"+
       "&forecast_days=7&timezone=Australia/Melbourne";
 
@@ -792,7 +799,7 @@ async function loadWeather(){
 
 
     /* ---------------------------------------------
-       GFS CURRENT MODEL VALUES
+      GFS CURRENT MODEL VALUES
     --------------------------------------------- */
 
     const current=data.current;
@@ -815,6 +822,7 @@ async function loadWeather(){
     const modelTemperature=current.temperature_2m;
     const modelSnowfall=current.snowfall;
     const modelRain=current.rain;
+    const modelWetBulb=current.wet_bulb_temperature_2m;
 
 
     /*
@@ -909,9 +917,14 @@ async function loadWeather(){
         : "—";
 
 
+    document.getElementById("modelWetBulb").textContent=
+      Number.isFinite(modelWetBulb)
+        ? modelWetBulb.toFixed(1)+" °C"
+        : "—";
+
+
     /* ---------------------------------------------
-       7-DAY FORECAST
-       Includes daily rain.
+      7-DAY FORECAST
     --------------------------------------------- */
 
     const daily=data.daily;
@@ -924,6 +937,8 @@ async function loadWeather(){
       "<th>Day</th>"+
       "<th>Min</th>"+
       "<th>Max</th>"+
+      "<th>WB min</th>"+
+      "<th>WB avg</th>"+
       "<th>Snow</th>"+
       "<th>Rain</th>"+
       "</tr>"+
@@ -970,11 +985,66 @@ async function loadWeather(){
         daily.rain_sum[i];
 
 
+      let wetBulbValues=[];
+
+
+      for(let j=0;j<hourly.time.length;j++){
+
+        const hourlyDate=
+          hourly.time[j].slice(0,10);
+
+
+        if(hourlyDate===daily.time[i]){
+
+          const value=
+            Number(
+              hourly.wet_bulb_temperature_2m[j]
+            );
+
+
+          if(Number.isFinite(value)){
+            wetBulbValues.push(value);
+          }
+
+        }
+
+      }
+
+
+      const wetBulbMin=
+        wetBulbValues.length
+          ? Math.min(...wetBulbValues)
+          : NaN;
+
+
+      const wetBulbAvg=
+        wetBulbValues.length
+          ? wetBulbValues.reduce(
+              (sum,value)=>sum+value,
+              0
+            )/wetBulbValues.length
+          : NaN;
+
+
       html+=
         "<tr>"+
         "<td>"+day+"</td>"+
         "<td>"+min+" °C</td>"+
         "<td>"+max+" °C</td>"+
+        "<td>"+
+        (
+          Number.isFinite(wetBulbMin)
+            ? wetBulbMin.toFixed(1)+" °C"
+            : "—"
+        )+
+        "</td>"+
+        "<td>"+
+        (
+          Number.isFinite(wetBulbAvg)
+            ? wetBulbAvg.toFixed(1)+" °C"
+            : "—"
+        )+
+        "</td>"+
         '<td class="snow">'+
         snow.toFixed(1)+
         " cm</td>"+
@@ -1002,7 +1072,8 @@ async function loadWeather(){
       "modelTemp",
       "modelSnow",
       "modelRain",
-      "modelFreeze"
+      "modelFreeze",
+      "modelWetBulb"
     ].forEach(
       id=>
         document.getElementById(id).textContent="—"
@@ -1032,7 +1103,7 @@ loadWeather();
 
 
 /* -------------------------------------------------
-   RADAR
+  RADAR
 ------------------------------------------------- */
 
 const mtStirling=[
