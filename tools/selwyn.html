@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Selwyn Snowfields — Snow &amp; Weather | iNabiTek</title>
-<meta name="description" content="Selwyn Snowfields webcam, snow forecast and weather radar.">
+<meta name="description" content="Selwyn Snowfields webcams, snow forecast and weather radar.">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
@@ -82,7 +82,7 @@ h2{
 
 .cams{
   display:grid;
-  grid-template-columns:1fr;
+  grid-template-columns:repeat(3,1fr);
   gap:20px
 }
 
@@ -317,6 +317,10 @@ footer{
     font-size:32px
   }
 
+  .cams{
+    grid-template-columns:1fr
+  }
+
   .model-grid{
     grid-template-columns:repeat(2,1fr)
   }
@@ -343,7 +347,7 @@ footer{
 <h2>Selwyn Snowfields Snow &amp; Weather</h2>
 
 <p class="lead">
-  Live snow camera and a seven-day GFS forecast for Selwyn Snowfields, New South Wales.
+  Live snow cameras and a seven-day GFS forecast for Selwyn Snowfields, New South Wales.
 </p>
 
 
@@ -351,7 +355,7 @@ footer{
 
 <section class="section">
 
-<h3>Live camera</h3>
+<h3>Live cameras</h3>
 
 <div class="cams">
 
@@ -359,13 +363,42 @@ footer{
 
     <img
       src="https://selwynsnow.com.au/cams/NCC/current.jpg"
-      alt="Selwyn Snowfields webcam"
-      id="selwynCam"
+      alt="Selwyn Snowfields NCC webcam"
     >
 
     <div class="cam-info">
-      <h4>Selwyn Snowfields</h4>
-      <p>New South Wales</p>
+      <h4>NCC</h4>
+      <p>Selwyn Snowfields</p>
+    </div>
+
+  </div>
+
+
+  <div class="cam">
+
+    <img
+      src="https://selwynsnow.com.au/cams/TSC/current.jpg"
+      alt="Selwyn Snowfields TSC webcam"
+    >
+
+    <div class="cam-info">
+      <h4>TSC</h4>
+      <p>Selwyn Snowfields</p>
+    </div>
+
+  </div>
+
+
+  <div class="cam">
+
+    <img
+      src="https://selwynsnow.com.au/cams/ROC/current.jpg"
+      alt="Selwyn Snowfields ROC webcam"
+    >
+
+    <div class="cam-info">
+      <h4>ROC</h4>
+      <p>Selwyn Snowfields</p>
     </div>
 
   </div>
@@ -373,7 +406,7 @@ footer{
 </div>
 
 <p class="note">
-  Camera image supplied by Selwyn Snow Resort · updated every 10 minutes between 6am and 5pm · live video stream available 24/7
+  Camera images supplied by Selwyn Snow Resort · updated every 10 minutes between 6am and 5pm · live video stream available 24/7
 </p>
 
 </section>
@@ -554,7 +587,7 @@ footer{
 <script>
 
 /* -------------------------------------------------
-   BOM OBSERVATIONS
+  BOM OBSERVATIONS
 ------------------------------------------------- */
 
 async function loadObservation(){
@@ -644,7 +677,7 @@ async function loadObservation(){
 
 
 /* -------------------------------------------------
-   GFS WEATHER
+  GFS WEATHER
 ------------------------------------------------- */
 
 async function loadWeather(){
@@ -912,7 +945,7 @@ loadWeather();
 
 
 /* -------------------------------------------------
-   RADAR
+  RADAR
 ------------------------------------------------- */
 
 const selwynSnowfields=[
