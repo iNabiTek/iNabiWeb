@@ -136,7 +136,7 @@ h2{
 
 .current-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:12px;
   margin-bottom:12px
 }
@@ -463,6 +463,11 @@ footer{
     </div>
 
     <div class="current-card">
+      <div class="value" id="currentWetBulb">—</div>
+      <div class="label">Wet-bulb</div>
+    </div>
+
+    <div class="current-card">
       <div class="value" id="currentRain">—</div>
       <div class="label">Rain since 9am</div>
     </div>
@@ -655,6 +660,9 @@ async function loadObservation(){
     const feelsLike=
       Number(data.apparent_temperature);
 
+    const wetBulb=
+      Number(data.wet_bulb_temperature);
+
     const rain=
       Number(data.rain_since_9am);
 
@@ -674,6 +682,12 @@ async function loadObservation(){
     document.getElementById("currentFeels").textContent=
       Number.isFinite(feelsLike)
         ? feelsLike.toFixed(1)+" °C"
+        : "—";
+
+
+    document.getElementById("currentWetBulb").textContent=
+      Number.isFinite(wetBulb)
+        ? wetBulb.toFixed(1)+" °C"
         : "—";
 
 
@@ -749,6 +763,7 @@ async function loadObservation(){
     [
       "currentTemp",
       "currentFeels",
+      "currentWetBulb",
       "currentRain",
       "currentWind"
     ].forEach(
