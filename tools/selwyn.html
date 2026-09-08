@@ -141,11 +141,11 @@ h2{
   margin-bottom:25px
 }
 
-/* Four-card grid for BOM observations */
+/* Five-card grid for BOM observations */
 
 .current-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:12px
 }
 
@@ -467,13 +467,18 @@ footer{
       </div>
 
       <div class="current-card">
-        <div class="value" id="bomFeels">—</div>
-        <div class="label">Feels like</div>
+        <div class="value" id="bomWetBulb">—</div>
+        <div class="label">Wet-bulb</div>
       </div>
 
       <div class="current-card">
         <div class="value" id="bomRain">—</div>
-        <div class="label">Rain since 9am</div>
+        <div class="label">Precipitation</div>
+      </div>
+
+      <div class="current-card">
+        <div class="value" id="bomFeels">—</div>
+        <div class="label">Feels like</div>
       </div>
 
       <div class="current-card">
@@ -506,25 +511,25 @@ footer{
       </div>
 
       <div class="model-item">
-        <div class="value" id="modelSnow">—</div>
-        <div class="label">Snowfall</div>
+        <div class="value" id="modelWetBulb">—</div>
+        <div class="label">Wet-bulb</div>
       </div>
 
       <div class="model-item">
         <div class="value" id="modelRain">—</div>
-        <div class="label">Current precipitation</div>
+        <div class="label">Precipitation</div>
         <div class="metric-note" id="modelRainPeriod"></div>
         <div class="metric-note" id="modelRainSince9am"></div>
       </div>
 
       <div class="model-item">
-        <div class="value" id="modelFreeze">—</div>
-        <div class="label">Freezing level</div>
+        <div class="value" id="modelSnow">—</div>
+        <div class="label">Snowfall</div>
       </div>
 
       <div class="model-item">
-        <div class="value" id="modelWetBulb">—</div>
-        <div class="label">Wet-bulb temperature</div>
+        <div class="value" id="modelFreeze">—</div>
+        <div class="label">Freezing level</div>
       </div>
 
     </div>
@@ -622,7 +627,7 @@ footer{
 <script>
 
 /* -------------------------------------------------
-   BOM OBSERVATIONS
+  BOM OBSERVATIONS
 ------------------------------------------------- */
 
 async function loadObservation(){
@@ -645,25 +650,31 @@ async function loadObservation(){
 
     document.getElementById("bomTemp").textContent =
       Number.isFinite(Number(data.temperature))
-        ? Number(data.temperature) + " °C"
+        ? Number(data.temperature).toFixed(1) + " °C"
+        : "—";
+
+
+    document.getElementById("bomWetBulb").textContent =
+      Number.isFinite(Number(data.wet_bulb_temperature))
+        ? Number(data.wet_bulb_temperature).toFixed(1) + " °C"
         : "—";
 
 
     document.getElementById("bomFeels").textContent =
       Number.isFinite(Number(data.apparent_temperature))
-        ? Number(data.apparent_temperature) + " °C"
+        ? Number(data.apparent_temperature).toFixed(1) + " °C"
         : "—";
 
 
     document.getElementById("bomRain").textContent =
       Number.isFinite(Number(data.rain_since_9am))
-        ? Number(data.rain_since_9am) + " mm"
+        ? Number(data.rain_since_9am).toFixed(1) + " mm"
         : "—";
 
 
     document.getElementById("bomWind").textContent =
       data.wind_direction && Number.isFinite(Number(data.wind_speed))
-        ? data.wind_direction + " " + Number(data.wind_speed) + " km/h"
+        ? data.wind_direction + " " + Number(data.wind_speed).toFixed(0) + " km/h"
         : "—";
 
 
@@ -694,6 +705,7 @@ async function loadObservation(){
 
     [
       "bomTemp",
+      "bomWetBulb",
       "bomFeels",
       "bomRain",
       "bomWind"
@@ -712,7 +724,7 @@ async function loadObservation(){
 
 
 /* -------------------------------------------------
-   GFS WEATHER
+  GFS WEATHER
 ------------------------------------------------- */
 
 async function loadWeather(){
@@ -1045,7 +1057,7 @@ loadWeather();
 
 
 /* -------------------------------------------------
-   RADAR
+  RADAR
 ------------------------------------------------- */
 
 const selwynSnowfields=[
