@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,25 +10,117 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f5f5;color:#222}
-header{background:#111;color:#fff;padding:24px 30px}
-header h1{margin:0;font-size:28px;font-weight:600;letter-spacing:.5px}
-header p{margin:6px 0 0;color:#aaa;font-size:15px}
-main{max-width:1000px;margin:0 auto;padding:45px 25px}
-.back{display:inline-block;margin-bottom:28px;color:#555;text-decoration:none;font-size:14px}
-.back:hover{text-decoration:underline}
-h2{font-size:38px;font-weight:500;margin:0 0 10px}
-.lead{max-width:700px;font-size:17px;line-height:1.6;color:#555;margin:0 0 35px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.card{display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:22px;text-decoration:none;color:inherit;transition:transform .15s ease,box-shadow .15s ease}
-.card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.08)}
-.card h3{margin:0 0 6px;font-size:20px}
-.card p{margin:0;color:#777;font-size:14px;line-height:1.5}
-footer{max-width:1000px;margin:20px auto 0;padding:25px;color:#888;font-size:13px}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:#f5f5f5;
+  color:#222
+}
+
+header{
+  background:#111;
+  color:#fff;
+  padding:24px 30px
+}
+
+header h1{
+  margin:0;
+  font-size:28px;
+  font-weight:600;
+  letter-spacing:.5px
+}
+
+header p{
+  margin:6px 0 0;
+  color:#aaa;
+  font-size:15px
+}
+
+main{
+  max-width:1000px;
+  margin:0 auto;
+  padding:45px 25px
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:28px;
+  color:#555;
+  text-decoration:none;
+  font-size:14px
+}
+
+.back:hover{
+  text-decoration:underline
+}
+
+h2{
+  font-size:38px;
+  font-weight:500;
+  margin:0 0 10px
+}
+
+.lead{
+  max-width:700px;
+  font-size:17px;
+  line-height:1.6;
+  color:#555;
+  margin:0 0 35px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:20px
+}
+
+.card{
+  display:block;
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:22px;
+  text-decoration:none;
+  color:inherit;
+  transition:transform .15s ease,box-shadow .15s ease
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px rgba(0,0,0,.08)
+}
+
+.card h3{
+  margin:0 0 6px;
+  font-size:20px
+}
+
+.card p{
+  margin:0;
+  color:#777;
+  font-size:14px;
+  line-height:1.5
+}
+
+footer{
+  max-width:1000px;
+  margin:20px auto 0;
+  padding:25px;
+  color:#888;
+  font-size:13px
+}
 
 @media(max-width:650px){
-main{padding-top:30px}
-h2{font-size:32px}
+
+  main{
+    padding-top:30px
+  }
+
+  h2{
+    font-size:32px
+  }
+
 }
 </style>
 </head>
@@ -63,13 +156,21 @@ h2{font-size:32px}
     <a class="card" href="/tools/selwyn.html">
       <h3>Selwyn Snowfields Snow &amp; Weather</h3>
       <p>
-        Live snow camera and a seven-day GFS forecast
+        Live snow cameras and a seven-day GFS forecast
         for Selwyn Snowfields, New South Wales.
       </p>
     </a>
 
+    <a class="card" href="/tools/mt-baw-baw.html">
+      <h3>Mt Baw Baw Snow &amp; Weather</h3>
+      <p>
+        Six live snow cameras, BOM observations and a
+        seven-day GFS forecast for Mt Baw Baw, Victoria.
+      </p>
+    </a>
+
   </section>
-  
+
 </main>
 
 <footer>© 2026 iNabiTek</footer>
