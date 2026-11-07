@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,9 +52,7 @@ main{
   font-size:14px
 }
 
-.back:hover{
-  text-decoration:underline
-}
+.back:hover{text-decoration:underline}
 
 h2{
   font-size:38px;
@@ -71,17 +68,13 @@ h2{
   margin:0 0 35px
 }
 
-.section{
-  margin-top:45px
-}
+.section{margin-top:45px}
 
 .section h3{
   font-size:24px;
   font-weight:500;
   margin:0 0 18px
 }
-
-/* WEBCAMS */
 
 .cams{
   display:grid;
@@ -99,12 +92,12 @@ h2{
 .cam img{
   display:block;
   width:100%;
-  height:auto
+  height:auto;
+  min-height:120px;
+  background:#eee
 }
 
-.cam-info{
-  padding:14px 16px
-}
+.cam-info{padding:14px 16px}
 
 .cam-info h4{
   margin:0 0 5px;
@@ -122,8 +115,6 @@ h2{
   color:#888;
   font-size:12px
 }
-
-/* WEATHER */
 
 .weather-box{
   background:#fff;
@@ -146,37 +137,14 @@ h2{
   margin-bottom:25px
 }
 
-.current-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:12px
-}
-
-.current-card{
-  background:#f5f5f5;
-  border:1px solid #ddd;
-  border-radius:8px;
-  padding:16px;
-  text-align:center
-}
-
-.current-card .value{
-  font-size:27px;
-  font-weight:600;
-  margin-bottom:5px
-}
-
-.current-card .label{
-  color:#777;
-  font-size:12px
-}
-
+.current-grid,
 .model-grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
   gap:12px
 }
 
+.current-card,
 .model-item{
   background:#f5f5f5;
   border:1px solid #ddd;
@@ -185,12 +153,14 @@ h2{
   text-align:center
 }
 
+.current-card .value,
 .model-item .value{
   font-size:27px;
   font-weight:600;
   margin-bottom:5px
 }
 
+.current-card .label,
 .model-item .label{
   color:#777;
   font-size:12px
@@ -211,8 +181,6 @@ h2{
   line-height:1.4
 }
 
-/* FORECAST TABLE */
-
 table{
   width:100%;
   border-collapse:collapse;
@@ -232,11 +200,7 @@ td{
   border-bottom:1px solid #eee
 }
 
-td.snow{
-  font-weight:600
-}
-
-/* RADAR */
+td.snow{font-weight:600}
 
 #map{
   width:100%;
@@ -279,9 +243,7 @@ td.snow{
   cursor:pointer
 }
 
-.radar-button:hover{
-  background:#f3f3f3
-}
+.radar-button:hover{background:#f3f3f3}
 
 .radar-button:disabled{
   opacity:.5;
@@ -341,31 +303,27 @@ footer{
   font-size:13px
 }
 
-/* MOBILE */
-
 @media(max-width:700px){
+  main{padding-top:30px}
 
-  main{
-    padding-top:30px
-  }
+  h2{font-size:32px}
 
-  h2{
-    font-size:32px
-  }
-
-  .cams{
-    grid-template-columns:1fr
-  }
+  .cams{grid-template-columns:1fr}
 
   .current-grid,
   .model-grid{
     grid-template-columns:repeat(2,1fr)
   }
 
-  #map{
-    height:420px
-  }
+  #map{height:420px}
 
+  .weather-box{padding:14px}
+
+  .current-card,
+  .model-item{padding:12px}
+
+  .current-card .value,
+  .model-item .value{font-size:24px}
 }
 </style>
 </head>
@@ -387,6 +345,7 @@ footer{
   Live snow cameras and a seven-day GFS forecast for Mt Baw Baw, Victoria.
 </p>
 
+
 <!-- WEBCAMS -->
 
 <section class="section">
@@ -399,6 +358,7 @@ footer{
     <img
       src="https://webcams.alpineresorts.vic.gov.au/latest/baw/toboggan-park.webp"
       alt="Mt Baw Baw Toboggan Park webcam"
+      loading="lazy"
     >
     <div class="cam-info">
       <h4>Toboggan Park</h4>
@@ -410,6 +370,7 @@ footer{
     <img
       src="https://webcams.alpineresorts.vic.gov.au/latest/baw/hut-roll.webp"
       alt="Mt Baw Baw Hut Roll webcam"
+      loading="lazy"
     >
     <div class="cam-info">
       <h4>Hut Roll</h4>
@@ -421,6 +382,7 @@ footer{
     <img
       src="https://webcams.alpineresorts.vic.gov.au/latest/baw/baw-baw-village.webp"
       alt="Mt Baw Baw Village webcam"
+      loading="lazy"
     >
     <div class="cam-info">
       <h4>Baw Baw Village</h4>
@@ -432,6 +394,7 @@ footer{
     <img
       src="https://webcams.alpineresorts.vic.gov.au/latest/baw/tank-hill.webp"
       alt="Mt Baw Baw Tank Hill webcam"
+      loading="lazy"
     >
     <div class="cam-info">
       <h4>Tank Hill</h4>
@@ -443,6 +406,7 @@ footer{
     <img
       src="https://webcams.alpineresorts.vic.gov.au/latest/baw/the-bowl.webp"
       alt="Mt Baw Baw The Bowl webcam"
+      loading="lazy"
     >
     <div class="cam-info">
       <h4>The Bowl</h4>
@@ -454,6 +418,7 @@ footer{
     <img
       src="https://webcams.alpineresorts.vic.gov.au/latest/baw/mid-summit.webp"
       alt="Mt Baw Baw Mid Summit webcam"
+      loading="lazy"
     >
     <div class="cam-info">
       <h4>Mid Summit</h4>
@@ -469,6 +434,7 @@ footer{
 
 </section>
 
+
 <!-- WEATHER -->
 
 <section class="section">
@@ -477,10 +443,11 @@ footer{
 
 <div class="weather-box">
 
+
   <!-- BOM OBSERVATION -->
 
   <div class="weather-section-label">
-    BOM current observation · Mt Baw Baw
+    BOM current observation · Mount Baw Baw station
   </div>
 
   <div class="model-box">
@@ -520,6 +487,7 @@ footer{
 
   </div>
 
+
   <!-- GFS MODEL -->
 
   <div class="weather-section-label">
@@ -544,6 +512,7 @@ footer{
         <div class="value" id="modelRain">—</div>
         <div class="label">Precipitation</div>
         <div class="metric-note" id="modelRainPeriod"></div>
+        <div class="metric-note" id="modelRainSince9am"></div>
       </div>
 
       <div class="model-item">
@@ -559,11 +528,12 @@ footer{
     </div>
 
     <div class="model-note">
-      Numerical weather model values for the Mt Baw Baw village
-      coordinates, not direct observations. GFS forecast via Open-Meteo.
+      Numerical weather model values for the Mt Baw Baw village coordinates,
+      not direct observations. GFS forecast via Open-Meteo.
     </div>
 
   </div>
+
 
   <!-- 7-DAY FORECAST -->
 
@@ -578,6 +548,7 @@ footer{
 </div>
 
 </section>
+
 
 <!-- RADAR -->
 
@@ -642,15 +613,15 @@ footer{
   © 2026 iNabiTek
 </footer>
 
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 
 <script>
 
 /* -------------------------------------------------
-   SHARED NUMBER FORMATTING
+   SHARED HELPERS
 ------------------------------------------------- */
-
-// Unlike Number(null), this does not turn missing data into zero.
 
 function numberOrNull(value){
 
@@ -664,8 +635,12 @@ function numberOrNull(value){
 
   const number = Number(value);
 
-  return Number.isFinite(number) ? number : null;
+  return Number.isFinite(number)
+    ? number
+    : null;
+
 }
+
 
 function formatTemperature(value){
 
@@ -674,7 +649,9 @@ function formatTemperature(value){
   return number === null
     ? "—"
     : number.toFixed(1) + " °C";
+
 }
+
 
 function formatMillimetres(value){
 
@@ -683,6 +660,18 @@ function formatMillimetres(value){
   return number === null
     ? "—"
     : number.toFixed(1) + " mm";
+
+}
+
+
+function formatCentimetres(value){
+
+  const number = numberOrNull(value);
+
+  return number === null
+    ? "—"
+    : number.toFixed(1) + " cm";
+
 }
 
 
@@ -692,6 +681,14 @@ function formatMillimetres(value){
 
 async function loadObservation(){
 
+  const ids = [
+    "bomTemp",
+    "bomWetBulb",
+    "bomRain",
+    "bomFeels",
+    "bomWind"
+  ];
+
   try{
 
     const response = await fetch(
@@ -699,45 +696,35 @@ async function loadObservation(){
     );
 
     if(!response.ok){
-      throw new Error("BOM observation unavailable");
+      throw new Error("Observation unavailable: " + response.status);
     }
 
     const data = await response.json();
 
-    const temperature =
-      numberOrNull(data.temperature);
-
-    const wetBulb =
-      numberOrNull(data.wet_bulb_temperature);
-
-    const feelsLike =
-      numberOrNull(data.apparent_temperature);
-
-    const rain =
-      numberOrNull(data.rain_since_9am);
-
-    const windSpeed =
-      numberOrNull(data.wind_speed);
-
-    const windGust =
-      numberOrNull(data.wind_gust);
-
     document.getElementById("bomTemp").textContent =
-      formatTemperature(temperature);
+      formatTemperature(data.temperature);
 
     document.getElementById("bomWetBulb").textContent =
-      formatTemperature(wetBulb);
+      formatTemperature(data.wet_bulb_temperature);
 
     document.getElementById("bomFeels").textContent =
-      formatTemperature(feelsLike);
+      formatTemperature(data.apparent_temperature);
 
     document.getElementById("bomRain").textContent =
-      formatMillimetres(rain);
+      formatMillimetres(data.rain_since_9am);
+
+    const windSpeed = numberOrNull(data.wind_speed);
 
     document.getElementById("bomWind").textContent =
-      data.wind_direction && windSpeed !== null
-        ? data.wind_direction + " " + windSpeed.toFixed(0) + " km/h"
+      windSpeed !== null
+        ? (
+            (data.wind_direction || "") +
+            " " +
+            windSpeed.toFixed(0) +
+            " km/h"
+          ).trim()
         : "—";
+
 
     const targetElevation =
       numberOrNull(data.target_elevation);
@@ -756,37 +743,30 @@ async function loadObservation(){
         targetElevation - stationElevation;
 
       elevationNote =
-        " · " +
-        Math.abs(difference).toFixed(1) +
-        " m elevation difference";
+        " · target elevation " +
+        targetElevation +
+        " m · station elevation " +
+        stationElevation +
+        " m · " +
+        Math.abs(difference) +
+        " m difference";
 
     }
 
+
     document.getElementById("bomNote").textContent =
       "BOM " +
-      data.station +
+      (data.station || "Mount Baw Baw") +
       " observation · " +
-      data.time +
-      " · station elevation " +
-      (stationElevation !== null ? stationElevation + " m" : "—") +
-      " · target elevation " +
-      (targetElevation !== null ? targetElevation + " m" : "—") +
-      elevationNote +
-      (windGust !== null
-        ? " · gusts " + windGust.toFixed(0) + " km/h"
-        : "");
+      (data.time || "time unavailable") +
+      elevationNote;
+
 
   }catch(error){
 
-    console.error(error);
+    console.error("BOM observation error:", error);
 
-    [
-      "bomTemp",
-      "bomWetBulb",
-      "bomFeels",
-      "bomRain",
-      "bomWind"
-    ].forEach(id=>{
+    ids.forEach(id => {
       document.getElementById(id).textContent = "—";
     });
 
@@ -804,13 +784,21 @@ async function loadObservation(){
 
 async function loadWeather(){
 
+  const modelIds = [
+    "modelTemp",
+    "modelWetBulb",
+    "modelRain",
+    "modelSnow",
+    "modelFreeze"
+  ];
+
   try{
 
     /*
-      GFS model data for Mt Baw Baw village.
-
-      Coordinates: -37.84034, 146.26345
-      Target elevation: approximately 1450 m
+      Mt Baw Baw village coordinates:
+      Latitude  -37.84034
+      Longitude 146.26345
+      Elevation 1450 m
     */
 
     const url =
@@ -821,73 +809,162 @@ async function loadWeather(){
       "&daily=snowfall_sum,rain_sum,precipitation_sum,temperature_2m_min,temperature_2m_max" +
       "&forecast_days=7&timezone=Australia/Melbourne";
 
+
     const response = await fetch(url);
 
     if(!response.ok){
-      throw new Error("Weather unavailable");
+      throw new Error("Weather unavailable: " + response.status);
     }
 
     const data = await response.json();
 
-    /* CURRENT MODEL VALUES */
-
     const current = data.current;
     const hourly = data.hourly;
+    const daily = data.daily;
 
-    const currentInterval = current.interval;
+
+    if(!current || !hourly || !daily){
+      throw new Error("Incomplete weather response");
+    }
+
+
+    /* ---------------------------------------------
+       CURRENT MODEL VALUES
+    --------------------------------------------- */
+
+    const currentTemperature =
+      numberOrNull(current.temperature_2m);
+
+    const currentWetBulb =
+      numberOrNull(current.wet_bulb_temperature_2m);
+
+    const currentRain =
+      numberOrNull(current.rain);
+
+    const currentSnowfall =
+      numberOrNull(current.snowfall);
+
+
+    document.getElementById("modelTemp").textContent =
+      formatTemperature(currentTemperature);
+
+    document.getElementById("modelWetBulb").textContent =
+      formatTemperature(currentWetBulb);
+
+    document.getElementById("modelRain").textContent =
+      formatMillimetres(currentRain);
+
+    document.getElementById("modelSnow").textContent =
+      formatCentimetres(currentSnowfall);
+
+
+    /* ---------------------------------------------
+       FIND CURRENT HOURLY FORECAST INDEX
+    --------------------------------------------- */
+
     const currentHour = current.time.slice(0,13);
 
     let hourIndex = hourly.time.findIndex(
-      t => t.slice(0,13) === currentHour
+      time => time.slice(0,13) === currentHour
     );
 
     if(hourIndex < 0){
       hourIndex = 0;
     }
 
-    const modelTemperature =
-      numberOrNull(current.temperature_2m);
 
-    const modelSnowfall =
-      numberOrNull(current.snowfall);
+    /* ---------------------------------------------
+       FREEZING LEVEL
+    --------------------------------------------- */
 
-    const modelRain =
-      numberOrNull(current.rain);
-
-    const modelWetBulb =
-      numberOrNull(current.wet_bulb_temperature_2m);
-
-    const freezing =
-      numberOrNull(hourly.freezing_level_height[hourIndex]);
-
-    document.getElementById("modelTemp").textContent =
-      formatTemperature(modelTemperature);
-
-    document.getElementById("modelWetBulb").textContent =
-      formatTemperature(modelWetBulb);
-
-    document.getElementById("modelSnow").textContent =
-      modelSnowfall !== null
-        ? modelSnowfall.toFixed(1) + " cm"
-        : "—";
-
-    document.getElementById("modelRain").textContent =
-      formatMillimetres(modelRain);
-
-    document.getElementById("modelRainPeriod").textContent =
-      numberOrNull(currentInterval) !== null
-        ? "Previous " + Math.round(currentInterval/60) + " min"
-        : "";
+    const freezingLevel =
+      numberOrNull(
+        hourly.freezing_level_height[hourIndex]
+      );
 
     document.getElementById("modelFreeze").textContent =
-      freezing !== null
-        ? Math.round(freezing) + " m"
+      freezingLevel !== null
+        ? Math.round(freezingLevel) + " m"
         : "—";
 
 
-    /* 7-DAY FORECAST */
+    /* ---------------------------------------------
+       PRECIPITATION PERIOD
+    --------------------------------------------- */
 
-    const daily = data.daily;
+    const interval =
+      numberOrNull(current.interval);
+
+    document.getElementById("modelRainPeriod").textContent =
+      interval !== null
+        ? "Previous " + Math.round(interval / 60) + " min"
+        : "";
+
+
+    /* ---------------------------------------------
+       PRECIPITATION SINCE 9AM
+
+       Hourly precipitation values represent the
+       preceding hour. Sum the hourly values from
+       10:00 onwards to represent precipitation
+       since 9am local time.
+
+       This mirrors the existing Selwyn page's
+       calculation; it is a model-derived estimate.
+    --------------------------------------------- */
+
+    let modelRainSince9am = 0;
+
+    const currentDate =
+      current.time.slice(0,10);
+
+    const currentHourNumber =
+      Number(current.time.slice(11,13));
+
+    let rainDataAvailable = false;
+
+
+    for(let i = 0; i < hourly.time.length; i++){
+
+      const hourlyDate =
+        hourly.time[i].slice(0,10);
+
+      const hourlyHour =
+        Number(hourly.time[i].slice(11,13));
+
+
+      if(
+        hourlyDate === currentDate &&
+        hourlyHour >= 10 &&
+        hourlyHour <= currentHourNumber
+      ){
+
+        const value =
+          numberOrNull(hourly.precipitation[i]);
+
+        if(value !== null){
+
+          modelRainSince9am += value;
+          rainDataAvailable = true;
+
+        }
+
+      }
+
+    }
+
+
+    document.getElementById("modelRainSince9am").textContent =
+      rainDataAvailable
+        ? "Precipitation since 9am: " +
+          modelRainSince9am.toFixed(1) +
+          " mm"
+        : "";
+
+
+    /* ---------------------------------------------
+       7-DAY FORECAST TABLE
+    --------------------------------------------- */
 
     let html =
       "<table>" +
@@ -904,14 +981,11 @@ async function loadWeather(){
       "</thead>" +
       "<tbody>";
 
-    for(let i=0; i<daily.time.length; i++){
 
-      const dateParts = daily.time[i].split("-").map(Number);
+    for(let i = 0; i < daily.time.length; i++){
 
       const date = new Date(
-        dateParts[0],
-        dateParts[1]-1,
-        dateParts[2]
+        daily.time[i] + "T12:00:00"
       );
 
       const day = date.toLocaleDateString(
@@ -923,21 +997,35 @@ async function loadWeather(){
         }
       );
 
-      const min = numberOrNull(daily.temperature_2m_min[i]);
-      const max = numberOrNull(daily.temperature_2m_max[i]);
-      const snow = numberOrNull(daily.snowfall_sum[i]);
-      const dailyRain = numberOrNull(daily.rain_sum[i]);
 
-      let wetBulbValues = [];
+      const min =
+        numberOrNull(daily.temperature_2m_min[i]);
 
-      for(let j=0; j<hourly.time.length; j++){
+      const max =
+        numberOrNull(daily.temperature_2m_max[i]);
 
-        const hourlyDate = hourly.time[j].slice(0,10);
+      const snow =
+        numberOrNull(daily.snowfall_sum[i]);
+
+      const rain =
+        numberOrNull(daily.rain_sum[i]);
+
+
+      /* Gather hourly wet-bulb values for this day */
+
+      const wetBulbValues = [];
+
+      for(let j = 0; j < hourly.time.length; j++){
+
+        const hourlyDate =
+          hourly.time[j].slice(0,10);
 
         if(hourlyDate === daily.time[i]){
 
           const value =
-            numberOrNull(hourly.wet_bulb_temperature_2m[j]);
+            numberOrNull(
+              hourly.wet_bulb_temperature_2m[j]
+            );
 
           if(value !== null){
             wetBulbValues.push(value);
@@ -947,6 +1035,7 @@ async function loadWeather(){
 
       }
 
+
       const wetBulbMin =
         wetBulbValues.length
           ? Math.min(...wetBulbValues)
@@ -954,46 +1043,62 @@ async function loadWeather(){
 
       const wetBulbAvg =
         wetBulbValues.length
-          ? wetBulbValues.reduce((sum,value)=>sum+value,0) /
-            wetBulbValues.length
+          ? wetBulbValues.reduce(
+              (sum,value) => sum + value,
+              0
+            ) / wetBulbValues.length
           : null;
+
 
       html +=
         "<tr>" +
         "<td>" + day + "</td>" +
-        "<td>" + (min !== null ? min.toFixed(0) + " °C" : "—") + "</td>" +
-        "<td>" + (max !== null ? max.toFixed(0) + " °C" : "—") + "</td>" +
-        "<td>" + formatTemperature(wetBulbMin) + "</td>" +
-        "<td>" + formatTemperature(wetBulbAvg) + "</td>" +
+
+        "<td>" +
+          (min !== null ? min.toFixed(0) + " °C" : "—") +
+        "</td>" +
+
+        "<td>" +
+          (max !== null ? max.toFixed(0) + " °C" : "—") +
+        "</td>" +
+
+        "<td>" +
+          (wetBulbMin !== null ? wetBulbMin.toFixed(1) + " °C" : "—") +
+        "</td>" +
+
+        "<td>" +
+          (wetBulbAvg !== null ? wetBulbAvg.toFixed(1) + " °C" : "—") +
+        "</td>" +
+
         '<td class="snow">' +
           (snow !== null ? snow.toFixed(1) + " cm" : "—") +
         "</td>" +
+
         "<td>" +
-          (dailyRain !== null ? dailyRain.toFixed(1) + " mm" : "—") +
+          (rain !== null ? rain.toFixed(1) + " mm" : "—") +
         "</td>" +
+
         "</tr>";
 
     }
+
 
     html += "</tbody></table>";
 
     document.getElementById("weather").innerHTML = html;
 
+
   }catch(error){
 
-    console.error(error);
+    console.error("GFS weather error:", error);
 
-    [
-      "modelTemp",
-      "modelSnow",
-      "modelRain",
-      "modelFreeze",
-      "modelWetBulb"
-    ].forEach(id=>{
+    modelIds.forEach(id => {
       document.getElementById(id).textContent = "—";
     });
 
     document.getElementById("modelRainPeriod").textContent = "";
+
+    document.getElementById("modelRainSince9am").textContent = "";
 
     document.getElementById("weather").textContent =
       "Weather data could not be loaded.";
@@ -1002,18 +1107,24 @@ async function loadWeather(){
 
 }
 
+
+/* -------------------------------------------------
+   LOAD WEATHER DATA
+------------------------------------------------- */
+
 loadObservation();
 loadWeather();
 
 
 /* -------------------------------------------------
-   RADAR
+   RAINVIEWER RADAR
 ------------------------------------------------- */
 
-const mtBawBaw = [
+const bawBawCoordinates = [
   -37.84034,
   146.26345
 ];
+
 
 const map = L.map(
   "map",
@@ -1022,9 +1133,10 @@ const map = L.map(
     maxZoom:7
   }
 ).setView(
-  mtBawBaw,
+  bawBawCoordinates,
   6
 );
+
 
 L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -1034,7 +1146,8 @@ L.tileLayer(
   }
 ).addTo(map);
 
-L.marker(mtBawBaw)
+
+L.marker(bawBawCoordinates)
   .addTo(map)
   .bindPopup("<strong>Mt Baw Baw</strong>");
 
@@ -1053,6 +1166,7 @@ async function loadRadar(){
   const next =
     document.getElementById("nextRadar");
 
+
   try{
 
     const response = await fetch(
@@ -1068,12 +1182,15 @@ async function loadRadar(){
     const frames =
       data.radar && data.radar.past;
 
+
     if(!frames || !frames.length){
       throw new Error("No radar frames available");
     }
 
-    const layers = frames.map(frame=>
-      L.tileLayer(
+
+    const layers = frames.map(frame => {
+
+      return L.tileLayer(
         "https://tilecache.rainviewer.com" +
         frame.path +
         "/256/{z}/{x}/{y}/2/1_1.png",
@@ -1081,17 +1198,22 @@ async function loadRadar(){
           opacity:0,
           attribution:"Radar: RainViewer"
         }
-      ).addTo(map)
-    );
+      ).addTo(map);
 
-    let current = layers.length-1;
+    });
+
+
+    let current = layers.length - 1;
+
     let playing = true;
+
     let timer;
+
 
     function frameTime(frame){
 
       return new Date(
-        frame.time*1000
+        frame.time * 1000
       ).toLocaleString(
         "en-AU",
         {
@@ -1107,17 +1229,25 @@ async function loadRadar(){
 
     }
 
+
     function showFrame(index){
 
-      current = (index+layers.length)%layers.length;
+      current =
+        (index + layers.length) % layers.length;
 
-      layers.forEach((layer,i)=>{
-        layer.setOpacity(i===current ? 0.7 : 0);
+
+      layers.forEach((layer,i) => {
+
+        layer.setOpacity(
+          i === current ? 0.7 : 0
+        );
+
       });
+
 
       status.textContent =
         "Frame " +
-        (current+1) +
+        (current + 1) +
         " of " +
         frames.length +
         " · " +
@@ -1126,50 +1256,58 @@ async function loadRadar(){
 
     }
 
+
     function start(){
 
       clearInterval(timer);
 
       timer = setInterval(
-        ()=>showFrame(current+1),
+        () => showFrame(current + 1),
         700
       );
 
       playing = true;
+
       playPause.textContent = "❚❚ Pause";
 
     }
+
 
     function stop(){
 
       clearInterval(timer);
 
       playing = false;
+
       playPause.textContent = "▶ Play";
 
     }
 
+
     previous.addEventListener(
       "click",
-      ()=>showFrame(current-1)
+      () => showFrame(current - 1)
     );
 
     next.addEventListener(
       "click",
-      ()=>showFrame(current+1)
+      () => showFrame(current + 1)
     );
 
     playPause.addEventListener(
       "click",
-      ()=>playing ? stop() : start()
+      () => playing ? stop() : start()
     );
 
+
     showFrame(current);
+
     start();
+
 
   }catch(error){
 
-    console.error(error);
+    console.error("Radar error:", error);
 
     status.textContent =
       "Radar data could not be loaded.";
@@ -1181,6 +1319,7 @@ async function loadRadar(){
   }
 
 }
+
 
 loadRadar();
 
